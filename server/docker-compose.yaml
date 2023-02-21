@@ -1,0 +1,21 @@
+version: '2'
+services:
+  postgres:    
+    image: postgres
+    container_name: postgres
+    ports:      
+      - "5431:5432" 
+    environment:      
+      POSTGRES_USER: postgres      
+      POSTGRES_PASSWORD: overtime      
+      POSTGRES_DB: postgres   
+    volumes:      
+      - ./db/schema/overtime_schema.sql:/docker-entrypoint-initdb.d/overtime_schema.sql
+  api:
+    image: habibahmedmagdy/overtime:latest
+    ports:
+      - "7000:7000"
+    depends_on:
+      - postgres
+
+      
