@@ -13,20 +13,20 @@ import {
 import AdminLanding from "./pages/AdminLanding";
 import "./index.css";
 
-const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <AdminLanding />,
-    // loader: rootLoader,
-    // children: [
-    //   {
-    //     path: "team",
-    //     element: <Team />,
-    //     loader: teamLoader,
-    //   },
-    // ],
-  },
-]);
+// const router = createBrowserRouter([
+//   {
+//     path: "/landing/admin",
+//     element: <AdminLanding />,
+//     loader: rootLoader,
+//     children: [
+//       {
+//         path: "team",
+//         element: <Team />,
+//         loader: teamLoader,
+//       },
+//     ],
+//   },
+// ]);
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>

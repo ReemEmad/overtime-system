@@ -63,7 +63,6 @@ export default function AdminLanding() {
           flexDirection: "row",
           justifyContent: "space-between",
           alignItems: "center",
-          marginBottom: "2",
         }}
       >
         <Button
