@@ -61,9 +61,8 @@ export default function AdminLanding() {
           display: "flex",
           flexGrow: 1,
           flexDirection: "row",
-          justifyContent: "space-between",
+          justifyContent: "space-around",
           alignItems: "center",
-          marginBottom: "2",
         }}
       >
         <Button
@@ -89,6 +88,7 @@ export default function AdminLanding() {
             <MenuItem value="all">All</MenuItem>
             <MenuItem value="squadlead">Squad Lead</MenuItem>
             <MenuItem value="cfo">Cfo</MenuItem>
+            <MenuItem value="operation">operation</MenuItem>
           </Select>
         </FormControl>
       </Box>
