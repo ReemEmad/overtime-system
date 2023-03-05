@@ -16,25 +16,15 @@ import InboxIcon from "@mui/icons-material/MoveToInbox";
 import AddBoxIcon from "@mui/icons-material/AddBox";
 import MailIcon from "@mui/icons-material/Mail";
 import AdminLanding from "../../pages/AdminLanding";
-import { Outlet } from "react-router-dom";
+import { Link, Outlet, useNavigate } from "react-router-dom";
 
 const drawerWidth = 240;
 
 export default function SideMenu() {
+  const navigate = useNavigate();
   return (
     <>
       <Box sx={{ display: "flex" }}>
-        {/* // <CssBaseline /> */}
-        {/* <AppBar
-        position="fixed"
-        sx={{ width: `calc(100% - ${drawerWidth}px)`, ml: `${drawerWidth}px` }}
-      >
-        <Toolbar>
-          <Typography variant="h6" noWrap component="div">
-            Permanent drawer
-          </Typography>
-        </Toolbar>
-      </AppBar> */}
         <Drawer
           sx={{
             width: drawerWidth,
@@ -50,9 +40,9 @@ export default function SideMenu() {
           <Toolbar />
           <Divider />
           <List>
-            {["Add new job"].map((text) => (
+            {["Listed Jobs"].map((text) => (
               <ListItem key={text} disablePadding>
-                <ListItemButton>
+                <ListItemButton onClick={() => navigate("/landing/jobs")}>
                   <ListItemIcon>
                     <AddBoxIcon />
                   </ListItemIcon>
@@ -61,7 +51,18 @@ export default function SideMenu() {
               </ListItem>
             ))}
           </List>
-          {/* <Divider /> */}
+          <List>
+            {["Listed Skills"].map((text) => (
+              <ListItem key={text} disablePadding>
+                <ListItemButton onClick={() => navigate("/landing/skills")}>
+                  <ListItemIcon>
+                    <AddBoxIcon />
+                  </ListItemIcon>
+                  <ListItemText primary={text} />
+                </ListItemButton>
+              </ListItem>
+            ))}
+          </List>
         </Drawer>
         <Box
           component="main"

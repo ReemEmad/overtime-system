@@ -20,10 +20,14 @@ import {
   Divider,
   TextField,
   Grid,
+  MenuItem,
 } from "@mui/material";
 import MuiAlert, { AlertProps } from "@mui/material/Alert";
+import { Formik, FormikHelpers } from "formik";
 import { LoadingButton } from "@mui/lab";
 import SideMenu from "../components/Menus/SideMenu";
+import { workLocations } from "../data/constants";
+import { usePostUserMutation } from "../services/user.service";
 
 const style = {
   position: "absolute" as "absolute",
@@ -36,10 +40,14 @@ const style = {
   boxShadow: 24,
   p: 4,
 };
+interface Values {
+  firstName: string;
+  lastName: string;
+  email: string;
+}
 
 export default function Register() {
-  const [userEmail, setuserEmail] = useState("");
-  const [userPassword, setuserPassword] = useState("");
+  const [postUser, { isLoading, isSuccess }] = usePostUserMutation();
 
   return (
     <>
@@ -70,44 +78,156 @@ export default function Register() {
           >
             Regsiter a new account
           </Typography>
-          <Box>
-            <TextField
-              id="filled-basic"
-              label="Email"
-              variant="filled"
-              fullWidth
-              value={userEmail}
-              onChange={(e) => setuserEmail(e.target.value)}
-            />
-          </Box>
-          <br />
-          <Box>
-            <TextField
-              id="filled-basic"
-              label="Password"
-              variant="filled"
-              fullWidth
-              type="password"
-              value={userPassword}
-              onChange={(e) => setuserPassword(e.target.value)}
-            />
-          </Box>
-          <br />
-          <Box>
-            <TextField
-              id="filled-basic"
-              label="Phone"
-              variant="filled"
-              fullWidth
-              type="text"
-              value={userPassword}
-              onChange={(e) => setuserPassword(e.target.value)}
-            />
-          </Box>
-          <br />
-          <Button variant="contained" size="medium" onClick={() => {}}>
-            Confirm
-          </Button>
+          <Formik
+            initialValues={{
+              candidateName: "",
+              email: "",
+              password: "",
+              phone: "",
+              squadLead: "",
+              work_title: "",
+              work_location: "",
+            }}
+            onSubmit={(values, { setSubmitting }) => {
+              // postUser({
+              //   name: values.candidateName,
+              //   work_title: values.work_title,
+              //   phone: values.phone,
+              //   work_location: values.work_location,
+              //   email: values.email,
+              //   password: values.password,
+              //   role_name: "operation",
+              // squad_lead: values.squadLead,
+              // });
+
+              console.log("~", values);
+              setTimeout(() => {
+                setSubmitting(false);
+              }, 400);
+            }}
+          >
+            {({
+              values,
+              errors,
+              touched,
+              handleChange,
+              handleBlur,
+              handleSubmit,
+              isSubmitting,
+            }) => (
+              <form onSubmit={handleSubmit}>
+                <Box>
+                  <TextField
+                    name="candidateName"
+                    id="filled-basic"
+                    label="Name"
+                    variant="filled"
+                    onChange={handleChange}
+                    fullWidth
+                    value={values.candidateName}
+                    // onChange={(e) => setuserEmail(e.target.value)}
+                  />
+                </Box>
+                <br />
+                <Box>
+                  <TextField
+                    name="email"
+                    id="filled-basic"
+                    label="Email"
+                    variant="filled"
+                    onChange={handleChange}
+                    fullWidth
+                    value={values.email}
+                    // onChange={(e) => setuserEmail(e.target.value)}
+                  />
+                </Box>
+                <br />
+                <Box>
+                  <TextField
+                    name="password"
+                    id="filled-basic"
+                    label="Password"
+                    variant="filled"
+                    onChange={handleChange}
+                    fullWidth
+                    type="password"
+                    value={values.password}
+                    // onChange={(e) => setuserPassword(e.target.value)}
+                  />
+                </Box>
+                <br />
+                <Box>
+                  <TextField
+                    name="phone"
+                    id="filled-basic"
+                    label="Phone"
+                    variant="filled"
+                    onChange={handleChange}
+                    fullWidth
+                    type="text"
+                    value={values.phone}
+                    // onChange={(e) => setuserPassword(e.target.value)}
+                  />
+                </Box>
+                <br />
+                <Box>
+                  <TextField
+                    name="squadLead"
+                    id="filled-basic"
+                    label="SquadLead"
+                    variant="filled"
+                    onChange={handleChange}
+                    fullWidth
+                    type="text"
+                    value={values.squadLead}
+                    // onChange={(e) => setuserPassword(e.target.value)}
+                  />
+                </Box>
+                <br />
+                <Box>
+                  <TextField
+                    name="work_title"
+                    id="filled-basic"
+                    label="Work Title"
+                    variant="filled"
+                    onChange={handleChange}
+                    fullWidth
+                    type="text"
+                    value={values.work_title}
+                    // onChange={(e) => setuserPassword(e.target.value)}
+                  />
+                </Box>
+                <br />
+                <TextField
+                  name="work_location"
+                  id="filled-select-currency"
+                  select
+                  label="Select work location"
+                  defaultValue=""
+                  variant="filled"
+                  value={values.work_location}
+                  onChange={handleChange}
+                  fullWidth
+                >
+                  {workLocations.map((option) => (
+                    <MenuItem key={option.value} value={option.value}>
+                      {option.label}
+                    </MenuItem>
+                  ))}
+                </TextField>
+                <br />
+                <br />
+                <Button
+                  variant="contained"
+                  size="medium"
+                  type="submit"
+                  disabled={isSubmitting}
+                >
+                  Confirm
+                </Button>
+              </form>
+            )}
+          </Formik>
         </Box>
       </Box>
     </>
