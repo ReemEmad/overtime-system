@@ -93,7 +93,7 @@ export default function AdminLanding() {
         </FormControl>
       </Box>
       {isLoading && <CircularProgress color="inherit" />}
-      <Grid container spacing={4}>
+      <Grid container spacing={1} ml="270px">
         {users.map((user: any) => (
           <Grid item xs={4} key={user.phone}>
             <SquadCard user={user} />

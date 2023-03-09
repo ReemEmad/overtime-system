@@ -6,7 +6,7 @@ const userExtendedApi = mainProvider.injectEndpoints({
     getUsers: builder.query({
       query: () => {
         return {
-          url: `users/managers`,
+          url: `/users/managers`,
         };
       },
       providesTags: ["users"],
