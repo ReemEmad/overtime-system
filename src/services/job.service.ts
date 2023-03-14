@@ -1,5 +1,5 @@
 import { mainProvider } from "./provider/main.provider";
-import { JobDTO } from "../data/DTO/Job";
+import { JobDTO, updateJobDto } from "../data/DTO/Job";
 
 const jobExtendedApi = mainProvider.injectEndpoints({
   endpoints: (builder) => ({
@@ -13,7 +13,7 @@ const jobExtendedApi = mainProvider.injectEndpoints({
     }),
     updateJob: builder.mutation<
       JobDTO,
-      { id: string | undefined; body: JobDTO }
+      { id: string | undefined; body: updateJobDto }
     >({
       query: ({ id, body }) => ({
         url: `/user/${id}`,
@@ -23,7 +23,7 @@ const jobExtendedApi = mainProvider.injectEndpoints({
       invalidatesTags: ["jobs"],
     }),
     postJob: builder.mutation<
-      JobDTO,
+      updateJobDto,
       {
         name: string | undefined;
         description: string | undefined;

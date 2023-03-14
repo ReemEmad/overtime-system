@@ -38,7 +38,7 @@ const style = {
   p: 4,
 };
 
-export default function NewSkill() {
+export default function Skills() {
   const [userEmail, setuserEmail] = useState("");
   const [userPassword, setuserPassword] = useState("");
   const [open, setOpen] = useState(false);

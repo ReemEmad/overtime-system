@@ -10,17 +10,18 @@ import AdminLanding from "./pages/AdminLanding";
 import SideMenu from "./components/Menus/SideMenu";
 import Signin from "./pages/Signin";
 import Register from "./pages/Register";
-import NewJob from "./pages/NewJob";
-import NewSkill from "./pages/NewSkill";
+import Jobs from "./pages/Jobs";
+import Skills from "./pages/Skills";
+import Error from "./Error";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <>
       <Route path="/" element={<Signin />} />
-      <Route path="/landing" element={<SideMenu />}>
+      <Route path="/landing" element={<SideMenu />} errorElement={<Error />}>
         <Route path="admin" element={<AdminLanding />}></Route>
-        <Route path="jobs" element={<NewJob />} />
-        <Route path="skills" element={<NewSkill />} />
+        <Route path="jobs" element={<Jobs />} />
+        <Route path="skills" element={<Skills />} />
       </Route>
       <Route path="/candidate">
         <Route path="register" element={<Register />} />
