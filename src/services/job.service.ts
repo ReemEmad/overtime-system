@@ -16,7 +16,7 @@ const jobExtendedApi = mainProvider.injectEndpoints({
       { id: string | undefined; body: updateJobDto }
     >({
       query: ({ id, body }) => ({
-        url: `/user/${id}`,
+        url: `/job-position/${id}`,
         method: "Patch",
         body,
       }),

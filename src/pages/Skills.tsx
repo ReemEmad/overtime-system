@@ -12,6 +12,7 @@ import {
   Fade,
   Button,
   Typography,
+  CircularProgress,
   Radio,
   RadioGroup,
   FormControl,
@@ -20,11 +21,27 @@ import {
   Divider,
   TextField,
   Grid,
+  Card,
+  CardActions,
+  CardContent,
+  Paper,
 } from "@mui/material";
 import MuiAlert, { AlertProps } from "@mui/material/Alert";
+import { styled } from "@mui/material/styles";
+import {
+  useGetSkillsQuery,
+  usePostSkillMutation,
+  useUpdateSkillMutation,
+  useDeleteSkillMutation,
+} from "../services/skill.service";
 import { LoadingButton } from "@mui/lab";
 import SideMenu from "../components/Menus/SideMenu";
 import { AddCircle, CleaningServices, Send } from "@mui/icons-material";
+import { Edit, Delete, Save } from "@mui/icons-material";
+import { skillDto } from "../data/DTO/Skill";
+import DeletePopup from "../components/Popups/DeletePopup";
+import SkillPopup from "../components/Popups/SkillPopup";
+import SkillCard from "../components/SkillCard";
 
 const style = {
   position: "absolute" as "absolute",
@@ -39,9 +56,48 @@ const style = {
 };
 
 export default function Skills() {
-  const [userEmail, setuserEmail] = useState("");
-  const [userPassword, setuserPassword] = useState("");
-  const [open, setOpen] = useState(false);
+  const [skillTitle, setskillTitle] = useState("");
+  const [skillDescription, setskillDescription] = useState("");
+  const [skills, setskills] = useState([]);
+  const [openAddskill, setopenAddskill] = useState(false);
+
+  const [openDelete, setopenDelete] = useState(false);
+  const page_number = 1;
+  const page_size = 100;
+  const [deleteskill, deleteskillRes] = useDeleteSkillMutation();
+  const [skillId, setskillId] = useState<string>("");
+  const { data, isSuccess, isLoading } = useGetSkillsQuery({
+    page_number,
+    page_size,
+  });
+  const [updateskill, updateskillRes] = usePostSkillMutation();
+  const handleCloseDelete = () => setopenDelete(false);
+
+  const Item = styled(Paper)(({ theme }) => ({
+    backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
+    ...theme.typography.body2,
+    padding: theme.spacing(1),
+    textAlign: "center",
+    color: theme.palette.text.secondary,
+  }));
+
+  useEffect(() => {
+    if (isSuccess) {
+      setskills(data);
+    }
+  }, [data]);
+
+  // const removeskill = () => {
+  //   deleteUser(id as string);
+  //   if (deleteUserRes.isSuccess) {
+  //     setopenSuccess(true);
+  //     handleCloseDelete();
+  //   }
+  // };
+
+  const patchskill = () => {
+    console.log("patched");
+  };
 
   return (
     <>
@@ -49,71 +105,64 @@ export default function Skills() {
         sx={{
           display: "flex",
           placeItems: "center",
-          justifyContent: "center",
+          justifyContent: "flex-end",
           gap: "10px",
-          margin: "auto",
-          //   height: "100vh",
         }}
       >
         <Button
           variant="contained"
           startIcon={<AddCircle />}
           size="medium"
-          onClick={() => setOpen(true)}
+          onClick={() => setopenAddskill(true)}
         >
           Add a skill
         </Button>
       </Box>
-      <Modal
-        aria-labelledby="transition-modal-title"
-        aria-describedby="transition-modal-description"
-        open={open}
-        onClose={() => setOpen(false)}
-        closeAfterTransition
+      <Box
+        sx={{
+          marginLeft: "300px",
+          width: "60%",
+        }}
       >
-        <Fade in={open}>
-          <Box sx={style}>
-            <Box sx={{ mb: 2 }}>
-              <Typography
-                id="modal-modal-title"
-                variant="h6"
-                component="h2"
-                color="ButtonFace"
-              >
-                Add a new skill
-              </Typography>
-            </Box>
-            <Box sx={{ ml: "21%" }}>
-              <TextField
-                id="filled-basic"
-                label="Title"
-                variant="filled"
-                // value={username}
-                // onChange={(e) => setusername(e.target.value)}
-              />
-              <TextField
-                id="filled-basic"
-                label="Description"
-                variant="filled"
-                // value={userTitle}
-                // onChange={(e) => setuserTitle(e.target.value)}
-              />
-              <Box sx={{ mt: 3, pr: 1 }}>
-                <LoadingButton
-                  //   loading={updateUserRes.isLoading}
-                  loadingPosition="start"
-                  //   startIcon={updateUserRes.isLoading ? <Save /> : null}
-                  variant="contained"
-                  //   onClick={editUser}
-                >
-                  Ok
-                </LoadingButton>
-              </Box>
-            </Box>
-            <br />
-          </Box>
-        </Fade>
-      </Modal>
+        <Grid container spacing={3}>
+          {isLoading && <CircularProgress color="inherit" />}
+          {skills.map((skill: skillDto) => (
+            <Grid item xs={4} key={skill.id}>
+              <SkillCard Skill={skill}>
+                <Delete
+                  color="error"
+                  onClick={() => {
+                    setskillId(skill.id);
+                    setopenDelete(true);
+                  }}
+                />
+              </SkillCard>
+            </Grid>
+          ))}
+        </Grid>
+      </Box>
+
+      <SkillPopup add={true} open={openAddskill} setOpen={setopenAddskill} />
+
+      <DeletePopup
+        handleOpenDelete={setopenDelete}
+        openDelete={openDelete}
+        DeleteModalTitle="Are You sure you want to delete this skill?"
+      >
+        <LoadingButton
+          loading={deleteskillRes.isLoading}
+          loadingPosition="start"
+          startIcon={deleteskillRes.isLoading ? <Save /> : null}
+          variant="contained"
+          onClick={() => {
+            deleteskill(skillId);
+            setopenDelete(false);
+          }}
+          size="small"
+        >
+          Confirm
+        </LoadingButton>
+      </DeletePopup>
     </>
   );
 }

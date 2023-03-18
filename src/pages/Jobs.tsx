@@ -127,7 +127,7 @@ export default function Jobs() {
         <Grid container spacing={3}>
           {isLoading && <CircularProgress color="inherit" />}
           {jobs.map((job: JobDTO) => (
-            <Grid item xs={4}>
+            <Grid item xs={4} key={job.id}>
               <JobCard job={job}>
                 <Delete
                   color="error"
