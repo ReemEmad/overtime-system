@@ -228,12 +228,6 @@ export default function UserPopup(props: {
                     label="Squad lead"
                     color="black"
                   />
-                  <FormControlLabel
-                    value="operation"
-                    control={<Radio />}
-                    label="Operation"
-                    color="black"
-                  />
                 </RadioGroup>
               </FormControl>
             </Box>
