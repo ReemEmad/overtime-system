@@ -26,6 +26,7 @@ const router = createBrowserRouter(
       <Route path="/candidate">
         <Route path="register" element={<Register />} />
       </Route>
+      <Route path="*" element={<p>404 Not found...</p>} />
     </>
   )
 );

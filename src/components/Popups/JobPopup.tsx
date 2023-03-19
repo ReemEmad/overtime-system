@@ -142,24 +142,22 @@ export default function JobPopup(props: {
         <Fade in={open}>
           <Box sx={style}>
             <Box sx={{ mb: 2 }}>
-              <Typography
-                id="modal-modal-title"
-                variant="h6"
-                component="h2"
-                color="ButtonFace"
-              >
+              <Typography id="modal-modal-title" variant="h6" component="h2">
                 {setModalTitle()}
               </Typography>
             </Box>
-            <Box sx={{ ml: "21%" }}>
+            <Box>
               <TextField
+                fullWidth
                 id="filled-basic"
                 label="Name"
                 variant="filled"
                 value={jobTitle}
                 onChange={(e) => setjobTitle(e.target.value)}
               />
+
               <TextField
+                fullWidth
                 id="filled-basic"
                 label="Description"
                 variant="filled"

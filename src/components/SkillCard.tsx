@@ -21,7 +21,7 @@ import {
 } from "@mui/material";
 import { Edit, Delete, Save } from "@mui/icons-material";
 import { skillDto } from "../data/DTO/Skill";
-import SkillPopup from "./Popups/skillPopup";
+import SkillPopup from "./Popups/SkillPopup";
 import { getCreatedDate } from "../utils/getDate";
 
 function SkillCard(props: { Skill: skillDto; children: ReactNode }) {

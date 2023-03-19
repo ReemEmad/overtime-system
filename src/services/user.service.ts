@@ -17,7 +17,7 @@ const userExtendedApi = mainProvider.injectEndpoints({
     >({
       query: ({ id, body }) => ({
         url: `/user/${id}`,
-        method: "Patch",
+        method: "Put",
         body,
       }),
       invalidatesTags: ["users"],

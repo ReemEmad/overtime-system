@@ -16,11 +16,10 @@ body {
   color: black;
 }
 
-.MuiSelect-select,
-.MuiSelect-select,
-.css-o943dk-MuiFormLabel-root-MuiInputLabel-root {
+/* .MuiSelect-select,
+.MuiSelect-select {
   color: white;
-}
+} */
 /* .css-11u53oe-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input {
   color: white !important;
   border-color: white !important;
@@ -33,12 +32,12 @@ body {
 }
 
 .css-d9oaum-MuiSelect-select-MuiInputBase-input-MuiFilledInput-input {
-  background: rgb(222, 222, 222) !important;
+  /* background: rgb(222, 222, 222) !important; */
   border: 1px !important;
 }
 
-input,
+/* input,
 select,
 textarea {
   color: rgb(220, 219, 219);
-}
+} */

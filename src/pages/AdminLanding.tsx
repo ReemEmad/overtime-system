@@ -88,7 +88,6 @@ export default function AdminLanding() {
             <MenuItem value="all">All</MenuItem>
             <MenuItem value="squadlead">Squad Lead</MenuItem>
             <MenuItem value="cfo">Cfo</MenuItem>
-            <MenuItem value="operation">operation</MenuItem>
           </Select>
         </FormControl>
       </Box>

@@ -17,7 +17,7 @@ const jobExtendedApi = mainProvider.injectEndpoints({
     >({
       query: ({ id, body }) => ({
         url: `/job-position/${id}`,
-        method: "Patch",
+        method: "Put",
         body,
       }),
       invalidatesTags: ["jobs"],

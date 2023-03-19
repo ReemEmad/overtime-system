@@ -16,10 +16,6 @@ import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import FormControl from "@mui/material/FormControl";
 import FormLabel from "@mui/material/FormLabel";
-import {
-  usePostUserMutation,
-  useUpdateUserMutation,
-} from "../../services/user.service";
 import { TextField } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
 import { Save } from "@mui/icons-material";
@@ -66,7 +62,7 @@ export default function SkillPopup(props: {
 
   const setModalTitle = () => {
     if (add) return "Add a new skill";
-    return "Edit skill Data";
+    return "Edit skill data";
   };
 
   const postNewskill = () => {
@@ -142,12 +138,7 @@ export default function SkillPopup(props: {
         <Fade in={open}>
           <Box sx={style}>
             <Box sx={{ mb: 2 }}>
-              <Typography
-                id="modal-modal-title"
-                variant="h6"
-                component="h2"
-                color="ButtonFace"
-              >
+              <Typography id="modal-modal-title" variant="h6" component="h2">
                 {setModalTitle()}
               </Typography>
             </Box>

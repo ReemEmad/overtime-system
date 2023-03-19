@@ -157,12 +157,7 @@ export default function UserPopup(props: {
         <Fade in={open}>
           <Box sx={style}>
             <Box sx={{ mb: 2 }}>
-              <Typography
-                id="modal-modal-title"
-                variant="h6"
-                component="h2"
-                color="ButtonFace"
-              >
+              <Typography id="modal-modal-title" variant="h6" component="h2">
                 {setModalTitle()}
               </Typography>
             </Box>
@@ -231,6 +226,12 @@ export default function UserPopup(props: {
                     value="squadlead"
                     control={<Radio />}
                     label="Squad lead"
+                    color="black"
+                  />
+                  <FormControlLabel
+                    value="operation"
+                    control={<Radio />}
+                    label="Operation"
                     color="black"
                   />
                 </RadioGroup>

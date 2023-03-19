@@ -17,7 +17,7 @@ const skillExtendedApi = mainProvider.injectEndpoints({
     >({
       query: ({ id, body }) => ({
         url: `/skill/${id}`,
-        method: "Patch",
+        method: "Put",
         body,
       }),
       invalidatesTags: ["skills"],
