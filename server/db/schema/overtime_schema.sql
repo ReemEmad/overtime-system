@@ -23,7 +23,7 @@ CREATE TABLE users (
   image bytea,
   work_title VARCHAR(255),
   phone VARCHAR(40) UNIQUE,
-  email TEXT NOT NULL,
+  email TEXT UNIQUE NOT NULL ,
   password TEXT NOT NULL,
   work_location TEXT,
   role_id INTEGER NOT NULL,
@@ -46,6 +46,14 @@ CREATE TABLE Role_Privilege (
 CREATE TABLE Skills (
   id serial PRIMARY KEY,
   name TEXT NOT NULL UNIQUE,
+  created_date timestamptz Not NULL default (now()),
+  description TEXT
+);
+
+CREATE TABLE Job_Positions (
+  id serial PRIMARY KEY,
+  name TEXT NOT NULL UNIQUE,
+  created_date timestamptz Not NULL default (now()),
   description TEXT
 );
 
@@ -65,18 +73,18 @@ CREATE TABLE Project (
 CREATE TABLE Job (
   id serial PRIMARY KEY,
   status varchar(255) NOT NULL,
-  created_date date Not NULL default (now()),
+  created_date timestamptz Not NULL default (now()),
   expected_start_date date,
   average_monthly_hours integer,
-  required_position_name TEXT,
   progress integer,
+  required_position integer references Job_Positions(id) NOT NULL,
   project_id integer references Project(id) NOT NULL
 );
 
 CREATE TABLE User_Assigned_Job (
   user_id integer references users(id) NOT NULL,
   job_id integer references Job(id) NOT NULL,
-  assigned_date  date Not NULL default (now()),
+  assigned_date  timestamptz Not NULL default (now()),
   start_date date,
   timesheet bytea,
   PRIMARY KEY (user_id, job_id)
@@ -85,7 +93,7 @@ CREATE TABLE User_Assigned_Job (
 
 CREATE TABLE Budget_Request (
   id serial PRIMARY KEY,
-  created_date date NOT NULL default (now()),
+  created_date timestamptz NOT NULL default (now()),
   status varchar(255),
   approved_date date,
   created_by integer references users(id) NOT NULL,
@@ -96,7 +104,7 @@ CREATE TABLE Budget_Request (
 CREATE TABLE Comment (
   id serial PRIMARY KEY,
   budget_request_id integer references Budget_Request(id) NOT NULL,
-  created_date date NOT NULL default (now()),
+  created_date timestamptz NOT NULL default (now()),
   comment_by integer references users(id) NOT NULL,
   comment TEXT Not NULL
 );
@@ -111,7 +119,7 @@ CREATE TABLE Job_Skills (
 CREATE TABLE User_Apply_Job (
   user_id integer references users(id),
   job_id integer references Job(id),
-  applied_date date Not NULL default (now()),
+  applied_date timestamptz Not NULL default (now()),
   PRIMARY KEY (user_id, job_id)
 );
 
