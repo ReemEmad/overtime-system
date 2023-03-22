@@ -35,6 +35,7 @@ import {
   useRegisterCandidateMutation,
 } from "../services/user.service";
 import { Save } from "@mui/icons-material";
+import { appRoutes } from "../data/constants/appRoutes";
 
 const style = {
   position: "absolute" as "absolute",
@@ -63,7 +64,7 @@ export default function Register() {
   };
 
   useEffect(() => {
-    if (registerUserRes.isSuccess) navigate("/candidate/landing");
+    if (registerUserRes.isSuccess) navigate(appRoutes.CANDIDATE_REGISTER);
   }, [registerUserRes.isSuccess]);
 
   useEffect(() => {
