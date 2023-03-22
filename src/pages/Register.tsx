@@ -31,6 +31,7 @@ import SideMenu from "../components/Menus/SideMenu";
 import { workLocations } from "../data/constants";
 import { useNavigate } from "react-router-dom";
 import {
+  useGetSquadLeadsQuery,
   usePostUserMutation,
   useRegisterCandidateMutation,
 } from "../services/user.service";
@@ -55,26 +56,44 @@ interface Values {
 }
 
 export default function Register() {
-  const [openSuccess, setopenSuccess] = useState(false);
+  const [openError, setopenError] = useState(false);
   const [registerUser, registerUserRes] = useRegisterCandidateMutation();
+  const [squadLeads, setsquadLeads] = useState([]);
+  const { data, isSuccess } = useGetSquadLeadsQuery({});
+  const [offices, setoffices] = useState([]);
   const navigate = useNavigate();
 
+  useEffect(() => {
+    if (isSuccess) {
+      setsquadLeads(data);
+    }
+  }, [isSuccess]);
+
   const handleCloseModal = () => {
-    setopenSuccess(false);
+    setopenError(false);
   };
 
   useEffect(() => {
-    if (registerUserRes.isSuccess) navigate(appRoutes.CANDIDATE_REGISTER);
+    const constants = JSON.parse(localStorage.getItem("constants")!);
+    setoffices(constants?.offices);
+  }, []);
+
+  useEffect(() => {
+    // if (registerUserRes.isSuccess) navigate(appRoutes.CANDIDATE_LANDING);
+    console.log(
+      "🚀 ~ file: Register.tsx:84 ~ useEffect ~ registerUserRes:",
+      registerUserRes
+    );
   }, [registerUserRes.isSuccess]);
 
   useEffect(() => {
-    if (registerUserRes.isError) setopenSuccess(true);
+    if (registerUserRes.isError) setopenError(true);
   }, [registerUserRes.isError]);
 
   return (
     <>
       <Snackbar
-        open={openSuccess}
+        open={openError}
         autoHideDuration={2000}
         onClose={handleCloseModal}
       >
@@ -132,7 +151,7 @@ export default function Register() {
                 work_location: values.work_location,
                 email: values.email,
                 password: values.password,
-                squadlead: 1,
+                squadLead: values.squadLead,
               });
             }}
           >
@@ -198,14 +217,21 @@ export default function Register() {
                 <Box>
                   <TextField
                     name="squadLead"
-                    id="filled-basic"
-                    label="SquadLead"
+                    id="filled-select-currency"
+                    label="Select Squad Lead"
+                    select
                     variant="filled"
                     onChange={handleChange}
                     fullWidth
                     type="text"
                     value={values.squadLead}
-                  />
+                  >
+                    {squadLeads.map((option: any) => (
+                      <MenuItem key={option.id} value={option.id}>
+                        {option.name}
+                      </MenuItem>
+                    ))}
+                  </TextField>
                 </Box>
                 <br />
                 <Box>
@@ -232,9 +258,9 @@ export default function Register() {
                   onChange={handleChange}
                   fullWidth
                 >
-                  {workLocations.map((option) => (
-                    <MenuItem key={option.value} value={option.value}>
-                      {option.label}
+                  {offices.map((option) => (
+                    <MenuItem key={option} value={option}>
+                      {option}
                     </MenuItem>
                   ))}
                 </TextField>

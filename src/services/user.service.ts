@@ -78,7 +78,7 @@ const userExtendedApi = mainProvider.injectEndpoints({
         work_location: string | undefined;
         email: string | undefined;
         password: string | undefined;
-        squadlead: number | undefined;
+        squadLead: string | undefined;
       }
     >({
       query: (args) => {
@@ -89,7 +89,7 @@ const userExtendedApi = mainProvider.injectEndpoints({
           work_location,
           email,
           password,
-          squadlead,
+          squadLead,
         } = args;
         return {
           url: "/register",
@@ -101,10 +101,18 @@ const userExtendedApi = mainProvider.injectEndpoints({
             work_location,
             email,
             password,
-            squadlead,
+            squadLead,
           },
         };
       },
+    }),
+    getSquadLeads: builder.query({
+      query: () => {
+        return {
+          url: `/squad-leads`,
+        };
+      },
+      providesTags: ["squadLeads"],
     }),
   }),
 });
@@ -115,4 +123,5 @@ export const {
   useUpdateUserMutation,
   useDeleteUserMutation,
   useRegisterCandidateMutation,
+  useGetSquadLeadsQuery,
 } = userExtendedApi;
