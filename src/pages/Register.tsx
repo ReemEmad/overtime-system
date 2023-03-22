@@ -21,13 +21,20 @@ import {
   TextField,
   Grid,
   MenuItem,
+  Snackbar,
+  Alert,
 } from "@mui/material";
 import MuiAlert, { AlertProps } from "@mui/material/Alert";
 import { Formik, FormikHelpers } from "formik";
 import { LoadingButton } from "@mui/lab";
 import SideMenu from "../components/Menus/SideMenu";
 import { workLocations } from "../data/constants";
-import { usePostUserMutation } from "../services/user.service";
+import { useNavigate } from "react-router-dom";
+import {
+  usePostUserMutation,
+  useRegisterCandidateMutation,
+} from "../services/user.service";
+import { Save } from "@mui/icons-material";
 
 const style = {
   position: "absolute" as "absolute",
@@ -47,10 +54,37 @@ interface Values {
 }
 
 export default function Register() {
-  const [postUser, { isLoading, isSuccess }] = usePostUserMutation();
+  const [openSuccess, setopenSuccess] = useState(false);
+  const [registerUser, registerUserRes] = useRegisterCandidateMutation();
+  const navigate = useNavigate();
+
+  const handleCloseModal = () => {
+    setopenSuccess(false);
+  };
+
+  useEffect(() => {
+    if (registerUserRes.isSuccess) navigate("/candidate/landing");
+  }, [registerUserRes.isSuccess]);
+
+  useEffect(() => {
+    if (registerUserRes.isError) setopenSuccess(true);
+  }, [registerUserRes.isError]);
 
   return (
     <>
+      <Snackbar
+        open={openSuccess}
+        autoHideDuration={2000}
+        onClose={handleCloseModal}
+      >
+        <Alert
+          onClose={handleCloseModal}
+          severity="error"
+          sx={{ width: "100%" }}
+        >
+          please check your data
+        </Alert>
+      </Snackbar>
       <Box
         sx={{
           display: "flex",
@@ -79,6 +113,7 @@ export default function Register() {
             Regsiter a new account
           </Typography>
           <Formik
+            enableReinitialize={true}
             initialValues={{
               candidateName: "",
               email: "",
@@ -88,22 +123,16 @@ export default function Register() {
               work_title: "",
               work_location: "",
             }}
-            onSubmit={(values, { setSubmitting }) => {
-              // postUser({
-              //   name: values.candidateName,
-              //   work_title: values.work_title,
-              //   phone: values.phone,
-              //   work_location: values.work_location,
-              //   email: values.email,
-              //   password: values.password,
-              //   role_name: "operation",
-              // squad_lead: values.squadLead,
-              // });
-
-              console.log("~", values);
-              setTimeout(() => {
-                setSubmitting(false);
-              }, 400);
+            onSubmit={async (values) => {
+              await registerUser({
+                name: values.candidateName,
+                work_title: values.work_title,
+                phone: values.phone,
+                work_location: values.work_location,
+                email: values.email,
+                password: values.password,
+                squadlead: 1,
+              });
             }}
           >
             {({
@@ -111,7 +140,6 @@ export default function Register() {
               errors,
               touched,
               handleChange,
-              handleBlur,
               handleSubmit,
               isSubmitting,
             }) => (
@@ -125,7 +153,6 @@ export default function Register() {
                     onChange={handleChange}
                     fullWidth
                     value={values.candidateName}
-                    // onChange={(e) => setuserEmail(e.target.value)}
                   />
                 </Box>
                 <br />
@@ -138,7 +165,6 @@ export default function Register() {
                     onChange={handleChange}
                     fullWidth
                     value={values.email}
-                    // onChange={(e) => setuserEmail(e.target.value)}
                   />
                 </Box>
                 <br />
@@ -152,7 +178,6 @@ export default function Register() {
                     fullWidth
                     type="password"
                     value={values.password}
-                    // onChange={(e) => setuserPassword(e.target.value)}
                   />
                 </Box>
                 <br />
@@ -166,7 +191,6 @@ export default function Register() {
                     fullWidth
                     type="text"
                     value={values.phone}
-                    // onChange={(e) => setuserPassword(e.target.value)}
                   />
                 </Box>
                 <br />
@@ -180,7 +204,6 @@ export default function Register() {
                     fullWidth
                     type="text"
                     value={values.squadLead}
-                    // onChange={(e) => setuserPassword(e.target.value)}
                   />
                 </Box>
                 <br />
@@ -194,7 +217,6 @@ export default function Register() {
                     fullWidth
                     type="text"
                     value={values.work_title}
-                    // onChange={(e) => setuserPassword(e.target.value)}
                   />
                 </Box>
                 <br />
@@ -217,14 +239,15 @@ export default function Register() {
                 </TextField>
                 <br />
                 <br />
-                <Button
+                <LoadingButton
+                  loading={registerUserRes.isLoading}
+                  loadingPosition="start"
+                  startIcon={registerUserRes.isLoading ? <Save /> : null}
                   variant="contained"
-                  size="medium"
                   type="submit"
-                  disabled={isSubmitting}
                 >
                   Confirm
-                </Button>
+                </LoadingButton>
               </form>
             )}
           </Formik>

@@ -43,7 +43,6 @@ const userExtendedApi = mainProvider.injectEndpoints({
           work_location,
           email,
           password,
-
           role_name,
         } = args;
         return {
@@ -70,6 +69,43 @@ const userExtendedApi = mainProvider.injectEndpoints({
       }),
       invalidatesTags: ["users"],
     }),
+    registerCandidate: builder.mutation<
+      userDataDto,
+      {
+        name: string | undefined;
+        work_title: string | undefined;
+        phone: string | undefined;
+        work_location: string | undefined;
+        email: string | undefined;
+        password: string | undefined;
+        squadlead: number | undefined;
+      }
+    >({
+      query: (args) => {
+        const {
+          name,
+          work_title,
+          phone,
+          work_location,
+          email,
+          password,
+          squadlead,
+        } = args;
+        return {
+          url: "/register",
+          method: "POST",
+          body: {
+            name,
+            work_title,
+            phone,
+            work_location,
+            email,
+            password,
+            squadlead,
+          },
+        };
+      },
+    }),
   }),
 });
 
@@ -78,4 +114,5 @@ export const {
   usePostUserMutation,
   useUpdateUserMutation,
   useDeleteUserMutation,
+  useRegisterCandidateMutation,
 } = userExtendedApi;

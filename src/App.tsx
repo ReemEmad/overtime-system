@@ -13,6 +13,7 @@ import Register from "./pages/Register";
 import Jobs from "./pages/Jobs";
 import Skills from "./pages/Skills";
 import Error from "./Error";
+import CandidateLanding from "./pages/CandidateLanding";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -25,6 +26,7 @@ const router = createBrowserRouter(
       </Route>
       <Route path="/candidate">
         <Route path="register" element={<Register />} />
+        <Route path="landing" element={<CandidateLanding />} />
       </Route>
       <Route path="*" element={<p>404 Not found...</p>} />
     </>
