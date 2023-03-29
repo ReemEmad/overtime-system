@@ -17,6 +17,7 @@ import AddBoxIcon from "@mui/icons-material/AddBox";
 import MailIcon from "@mui/icons-material/Mail";
 import AdminLanding from "../../pages/AdminLanding";
 import { Link, Outlet, useNavigate } from "react-router-dom";
+import { appRoutes } from "../../data/constants/appRoutes";
 
 const drawerWidth = 240;
 
@@ -42,7 +43,9 @@ export default function SideMenu() {
           <List>
             {["Listed Jobs"].map((text) => (
               <ListItem key={text} disablePadding>
-                <ListItemButton onClick={() => navigate("/landing/jobs")}>
+                <ListItemButton
+                  onClick={() => navigate(appRoutes.ADMIN_LANDING_JOBS)}
+                >
                   <ListItemIcon>
                     <AddBoxIcon />
                   </ListItemIcon>
@@ -54,7 +57,9 @@ export default function SideMenu() {
           <List>
             {["Listed Skills"].map((text) => (
               <ListItem key={text} disablePadding>
-                <ListItemButton onClick={() => navigate("/landing/skills")}>
+                <ListItemButton
+                  onClick={() => navigate(appRoutes.ADMIN_LANDING_SKILLS)}
+                >
                   <ListItemIcon>
                     <AddBoxIcon />
                   </ListItemIcon>
