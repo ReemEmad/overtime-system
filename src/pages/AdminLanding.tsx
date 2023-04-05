@@ -19,16 +19,25 @@ import Select, { SelectChangeEvent } from "@mui/material/Select";
 import UserPopup from "../components/Popups/UserPopup";
 import "../App.css";
 import { userDataDto } from "../data/DTO/User";
+import useRoleRedirect from "../hooks/userRedirectRole";
+import useLocalStorage from "../hooks/useLocalStorage";
+import { UserRoles } from "../data/DTO/Roles";
+import { appRoutes } from "../data/constants/appRoutes";
+import { useNavigate } from "react-router-dom";
 
 export default function AdminLanding() {
   const { data, isLoading, isSuccess, error } = useGetUsersQuery({});
   const [users, setUsers] = useState([]);
   const [addUserModal, setaddUserModal] = useState(false);
+  const navigate = useNavigate();
   const [selectedRole, setSelectedRole] = useState("");
+  const [user] = useLocalStorage("userData", {});
 
   const chooseUserRole = (event: SelectChangeEvent) => {
     setSelectedRole(event.target.value);
   };
+
+  // useRoleRedirect([UserRoles.Operation], appRoutes.CANDIDATE_LANDING, navigate);
 
   const filterUsersByRole = () => {
     const copyUsers = data.slice();

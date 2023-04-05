@@ -6,24 +6,17 @@ import {
   forwardRef,
   useEffect,
 } from "react";
-import {
-  Box,
-  Modal,
-  Fade,
-  Button,
-  Typography,
-  Radio,
-  RadioGroup,
-  FormControl,
-  FormControlLabel,
-  FormLabel,
-  Divider,
-  TextField,
-  Grid,
-} from "@mui/material";
+import { Box, Button, Typography, Divider, TextField } from "@mui/material";
 import MuiAlert, { AlertProps } from "@mui/material/Alert";
 import { LoadingButton } from "@mui/lab";
 import SideMenu from "../components/Menus/SideMenu";
+import { useNavigate } from "react-router-dom";
+import { useLoginUserMutation } from "../services/auth.service";
+import { AuthResponse } from "../data/DTO/AuthResponse";
+import useAuthToken from "../hooks/useAuthToken";
+import useAuthorization from "../hooks/useAuthorization";
+import { UserRoles } from "../data/DTO/Roles";
+import { appRoutes } from "../data/constants/appRoutes";
 
 const style = {
   position: "absolute" as "absolute",
@@ -37,9 +30,57 @@ const style = {
   p: 4,
 };
 
+interface userDTO {
+  role: UserRoles;
+  access_token: string;
+  user: object;
+}
+
 export default function Signin() {
+  const navigate = useNavigate();
+  const [loginUser, loginUserRes] = useLoginUserMutation();
   const [userEmail, setuserEmail] = useState("");
   const [userPassword, setuserPassword] = useState("");
+  const { setAuthToken } = useAuthToken("");
+  const [user, setUser] = useState<userDTO>();
+
+  const confirmLogin = () => {
+    loginUser({ email: userEmail, password: userPassword });
+  };
+
+  const checkUserRoleAndRedirect = (userRole: UserRoles) => {
+    switch (userRole) {
+      case UserRoles.Operation:
+        navigate(appRoutes.CANDIDATE_LANDING);
+        break;
+      case UserRoles.CFO:
+        navigate(appRoutes.ADMIN_LANDING);
+        break;
+      case UserRoles.SquadLead:
+        navigate(appRoutes.ADMIN_LANDING);
+        break;
+      case UserRoles.Admin:
+        navigate(appRoutes.ADMIN_LANDING);
+        break;
+      default:
+        "";
+        break;
+    }
+    return;
+  };
+
+  useEffect(() => {
+    if (loginUserRes.isSuccess) {
+      const response: any = loginUserRes.data;
+      setUser(response);
+      localStorage.setItem("userData", JSON.stringify(response));
+      console.log(
+        "🚀 ~ file: Signin.tsx:77 ~ useEffect ~ response.role:",
+        response.role
+      );
+      checkUserRoleAndRedirect(response.role);
+    }
+  }, [loginUserRes]);
 
   return (
     <>
@@ -93,7 +134,7 @@ export default function Signin() {
             />
           </Box>
           <br />
-          <Button variant="contained" size="medium" onClick={() => {}}>
+          <Button variant="contained" size="medium" onClick={confirmLogin}>
             Login
           </Button>
         </Box>
