@@ -6,24 +6,18 @@ import {
   forwardRef,
   useEffect,
 } from "react";
-import {
-  Box,
-  Modal,
-  Fade,
-  Button,
-  Typography,
-  Radio,
-  RadioGroup,
-  FormControl,
-  FormControlLabel,
-  FormLabel,
-  Divider,
-  TextField,
-  Grid,
-} from "@mui/material";
+import { Box, Button, Typography, Divider, TextField } from "@mui/material";
 import MuiAlert, { AlertProps } from "@mui/material/Alert";
 import { LoadingButton } from "@mui/lab";
 import SideMenu from "../components/Menus/SideMenu";
+import { useNavigate } from "react-router-dom";
+import { useLoginUserMutation } from "../services/auth.service";
+import { AuthResponse } from "../data/DTO/AuthResponse";
+import useAuthToken from "../hooks/useAuthToken";
+import useAuthorization from "../hooks/useAuthorization";
+import { UserRoles } from "../data/DTO/Roles";
+import { appRoutes } from "../data/constants/appRoutes";
+import useAlert from "../components/Alerts/useAlert";
 
 const style = {
   position: "absolute" as "absolute",
@@ -37,9 +31,60 @@ const style = {
   p: 4,
 };
 
+interface userDTO {
+  role: UserRoles;
+  access_token: string;
+  user: object;
+}
+
 export default function Signin() {
+  const [AlertComponent, showAlert] = useAlert();
+  const navigate = useNavigate();
+  const [loginUser, loginUserRes] = useLoginUserMutation();
   const [userEmail, setuserEmail] = useState("");
   const [userPassword, setuserPassword] = useState("");
+  const [errorMessages, seterrorMessages] = useState([]);
+
+  const confirmLogin = () => {
+    loginUser({ email: userEmail, password: userPassword });
+  };
+
+  const checkUserRoleAndRedirect = (userRole: UserRoles) => {
+    switch (userRole) {
+      case UserRoles.Operation:
+        navigate(appRoutes.CANDIDATE_LANDING);
+        break;
+      case UserRoles.CFO:
+        navigate(appRoutes.ADMIN_LANDING);
+        break;
+      case UserRoles.SquadLead:
+        navigate(appRoutes.ADMIN_LANDING);
+        break;
+      case UserRoles.Admin:
+        navigate(appRoutes.ADMIN_LANDING);
+        break;
+      default:
+        "";
+        break;
+    }
+    return;
+  };
+
+  useEffect(() => {
+    if (loginUserRes.isSuccess) {
+      const response: any = loginUserRes.data;
+      localStorage.setItem("userData", JSON.stringify(response.body));
+      showAlert(["logged in successfully"], "success");
+      checkUserRoleAndRedirect(response.body.role);
+    } else if (loginUserRes.isError) {
+      const errorRes: any = loginUserRes.error;
+      let data: any = [...errorMessages];
+      errorRes.data.messages.map((message: any) => data.push(message.message));
+      seterrorMessages(data);
+      showAlert([data.join(" ")], "error");
+      seterrorMessages([]);
+    }
+  }, [loginUserRes.isSuccess, loginUserRes.isError]);
 
   return (
     <>
@@ -93,11 +138,12 @@ export default function Signin() {
             />
           </Box>
           <br />
-          <Button variant="contained" size="medium" onClick={() => {}}>
+          <Button variant="contained" size="medium" onClick={confirmLogin}>
             Login
           </Button>
         </Box>
       </Box>
+      <AlertComponent />
     </>
   );
 }

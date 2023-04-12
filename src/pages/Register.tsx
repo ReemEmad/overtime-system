@@ -30,6 +30,7 @@ import { LoadingButton } from "@mui/lab";
 import SideMenu from "../components/Menus/SideMenu";
 import { workLocations } from "../data/constants";
 import { useNavigate } from "react-router-dom";
+import { useGetJobsQuery } from "../services/job.service";
 import {
   useGetSquadLeadsQuery,
   usePostUserMutation,
@@ -37,6 +38,7 @@ import {
 } from "../services/user.service";
 import { Save } from "@mui/icons-material";
 import { appRoutes } from "../data/constants/appRoutes";
+import { UserRoles } from "../data/DTO/Roles";
 
 const style = {
   position: "absolute" as "absolute",
@@ -56,8 +58,13 @@ interface Values {
 }
 
 export default function Register() {
+  const { data: jobPositions, isSuccess: isGetSuccess } = useGetJobsQuery({
+    page_number: 0,
+    page_size: 0,
+  });
   const [openError, setopenError] = useState(false);
   const [registerUser, registerUserRes] = useRegisterCandidateMutation();
+
   const [squadLeads, setsquadLeads] = useState([]);
   const { data, isSuccess } = useGetSquadLeadsQuery({});
   const [offices, setoffices] = useState([]);
@@ -65,7 +72,7 @@ export default function Register() {
 
   useEffect(() => {
     if (isSuccess) {
-      setsquadLeads(data);
+      setsquadLeads(data.body);
     }
   }, [isSuccess]);
 
@@ -74,20 +81,54 @@ export default function Register() {
   };
 
   useEffect(() => {
+    if (isGetSuccess)
+      console.log(
+        "🚀 ~ file: Register.tsx:85 ~ useEffect ~ jobPositions:",
+        jobPositions
+      );
+  }, [isGetSuccess]);
+
+  const checkUserRoleAndRedirect = (userRole: UserRoles) => {
+    switch (userRole) {
+      case UserRoles.Operation:
+        navigate(appRoutes.CANDIDATE_LANDING);
+        break;
+      case UserRoles.CFO:
+        navigate(appRoutes.ADMIN_LANDING);
+        break;
+      case UserRoles.SquadLead:
+        navigate(appRoutes.ADMIN_LANDING);
+        break;
+      case UserRoles.Admin:
+        navigate(appRoutes.ADMIN_LANDING);
+        break;
+      default:
+        "";
+        break;
+    }
+    return;
+  };
+
+  useEffect(() => {
     const constants = JSON.parse(localStorage.getItem("constants")!);
     setoffices(constants?.offices);
   }, []);
 
   useEffect(() => {
-    // if (registerUserRes.isSuccess) navigate(appRoutes.CANDIDATE_LANDING);
-    console.log(
-      "🚀 ~ file: Register.tsx:84 ~ useEffect ~ registerUserRes:",
-      registerUserRes
-    );
+    if (registerUserRes.isSuccess) {
+      const response: any = registerUserRes.data;
+
+      localStorage.setItem("userData", JSON.stringify(response));
+      checkUserRoleAndRedirect(response.role);
+      navigate(appRoutes.CANDIDATE_LANDING);
+    }
   }, [registerUserRes.isSuccess]);
 
   useEffect(() => {
-    if (registerUserRes.isError) setopenError(true);
+    if (registerUserRes.isError) {
+      console.log(registerUserRes.isError);
+      setopenError(true);
+    }
   }, [registerUserRes.isError]);
 
   return (
@@ -144,9 +185,13 @@ export default function Register() {
               work_location: "",
             }}
             onSubmit={async (values) => {
+              console.log(
+                "🚀 ~ file: Register.tsx:177 ~ onSubmit={ ~ values:",
+                values
+              );
               await registerUser({
                 name: values.candidateName,
-                work_title: values.work_title,
+                work_title: "Senior Software Engineer",
                 phone: values.phone,
                 work_location: values.work_location,
                 email: values.email,
@@ -239,12 +284,20 @@ export default function Register() {
                     name="work_title"
                     id="filled-basic"
                     label="Work Title"
+                    select
                     variant="filled"
                     onChange={handleChange}
                     fullWidth
                     type="text"
                     value={values.work_title}
-                  />
+                  >
+                    {isGetSuccess &&
+                      jobPositions?.body.map((option: any) => (
+                        <MenuItem key={option.id} value={option.name}>
+                          {option.name}
+                        </MenuItem>
+                      ))}
+                  </TextField>
                 </Box>
                 <br />
                 <TextField
@@ -283,3 +336,4 @@ export default function Register() {
     </>
   );
 }
+
