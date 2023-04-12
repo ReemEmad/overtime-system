@@ -17,6 +17,7 @@ import useAuthToken from "../hooks/useAuthToken";
 import useAuthorization from "../hooks/useAuthorization";
 import { UserRoles } from "../data/DTO/Roles";
 import { appRoutes } from "../data/constants/appRoutes";
+import useAlert from "../components/Alerts/useAlert";
 
 const style = {
   position: "absolute" as "absolute",
@@ -37,12 +38,12 @@ interface userDTO {
 }
 
 export default function Signin() {
+  const [AlertComponent, showAlert] = useAlert();
   const navigate = useNavigate();
   const [loginUser, loginUserRes] = useLoginUserMutation();
   const [userEmail, setuserEmail] = useState("");
   const [userPassword, setuserPassword] = useState("");
-  const { setAuthToken } = useAuthToken("");
-  const [user, setUser] = useState<userDTO>();
+  const [errorMessages, seterrorMessages] = useState([]);
 
   const confirmLogin = () => {
     loginUser({ email: userEmail, password: userPassword });
@@ -72,15 +73,18 @@ export default function Signin() {
   useEffect(() => {
     if (loginUserRes.isSuccess) {
       const response: any = loginUserRes.data;
-      setUser(response);
-      localStorage.setItem("userData", JSON.stringify(response));
-      console.log(
-        "🚀 ~ file: Signin.tsx:77 ~ useEffect ~ response.role:",
-        response.role
-      );
-      checkUserRoleAndRedirect(response.role);
+      localStorage.setItem("userData", JSON.stringify(response.body));
+      showAlert(["logged in successfully"], "success");
+      checkUserRoleAndRedirect(response.body.role);
+    } else if (loginUserRes.isError) {
+      const errorRes: any = loginUserRes.error;
+      let data: any = [...errorMessages];
+      errorRes.data.messages.map((message: any) => data.push(message.message));
+      seterrorMessages(data);
+      showAlert([data.join(" ")], "error");
+      seterrorMessages([]);
     }
-  }, [loginUserRes]);
+  }, [loginUserRes.isSuccess, loginUserRes.isError]);
 
   return (
     <>
@@ -139,6 +143,7 @@ export default function Signin() {
           </Button>
         </Box>
       </Box>
+      <AlertComponent />
     </>
   );
 }

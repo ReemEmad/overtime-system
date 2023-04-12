@@ -30,22 +30,25 @@ export default function AdminLanding() {
   const [users, setUsers] = useState([]);
   const [addUserModal, setaddUserModal] = useState(false);
   const navigate = useNavigate();
-  const [selectedRole, setSelectedRole] = useState("");
+  const [selectedRole, setSelectedRole] = useState("all");
   const [user] = useLocalStorage("userData", {});
 
   const chooseUserRole = (event: SelectChangeEvent) => {
     setSelectedRole(event.target.value);
   };
-
-  // useRoleRedirect([UserRoles.Operation], appRoutes.CANDIDATE_LANDING, navigate);
+  const isAuthorized = useRoleRedirect(
+    [UserRoles.Admin, UserRoles.CFO],
+    appRoutes.CANDIDATE_LANDING,
+    navigate
+  );
 
   const filterUsersByRole = () => {
-    const copyUsers = data.slice();
+    const copyUsers = data.body.slice();
     const filteredUsers = copyUsers.filter((user: userDataDto) =>
       user?.role_name?.includes(selectedRole)
     );
     if (selectedRole === "all") {
-      setUsers(data);
+      setUsers(data.body);
       return;
     }
     setUsers(filteredUsers as any);
@@ -53,7 +56,7 @@ export default function AdminLanding() {
 
   useEffect(() => {
     if (isSuccess) {
-      setUsers(data);
+      setUsers(data.body);
     }
   }, [data]);
 
