@@ -17,11 +17,13 @@ import AddBoxIcon from "@mui/icons-material/AddBox";
 import MailIcon from "@mui/icons-material/Mail";
 import AdminLanding from "../../pages/AdminLanding";
 import { Link, Outlet, useNavigate } from "react-router-dom";
+import { getUserRole } from "../../utils/utility";
 import { appRoutes } from "../../data/constants/appRoutes";
 
 const drawerWidth = 240;
 
 export default function SideMenu() {
+  const role = getUserRole();
   const navigate = useNavigate();
   return (
     <>

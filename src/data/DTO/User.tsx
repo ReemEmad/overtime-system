@@ -8,3 +8,8 @@ export interface userDataDto {
   password: string;
   role_name?: string;
 }
+
+export interface userRes {
+  messages: [];
+  body: any;
+}

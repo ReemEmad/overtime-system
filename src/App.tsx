@@ -17,6 +17,7 @@ import Error from "./Error";
 import { useGetAppConstantsQuery } from "./services/app.service";
 import CandidateLanding from "./pages/CandidateLanding";
 import Signout from "./pages/Signout";
+import SquadLeadLanding from "./pages/SquadLeadLanding";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -31,6 +32,11 @@ const router = createBrowserRouter(
         <Route path="register" element={<Register />} />
         <Route path="landing" element={<CandidateLanding />} />
         <Route path="signout" element={<Signout />} />
+      </Route>
+      <Route path="/squadlead" errorElement={<Error />} element={<SideMenu />}>
+        {/* <Route path="register" element={<Register />} /> */}
+        <Route path="landing" element={<SquadLeadLanding />} />
+        {/* <Route path="signout" element={<Signout />} /> */}
       </Route>
       <Route path="*" element={<p>404 Not found...</p>} />
     </>
