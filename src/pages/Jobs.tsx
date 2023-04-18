@@ -83,7 +83,7 @@ export default function Jobs() {
 
   useEffect(() => {
     if (isSuccess) {
-      setjobs(data);
+      setjobs(data.body);
     }
   }, [data]);
 

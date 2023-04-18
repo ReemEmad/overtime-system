@@ -83,7 +83,7 @@ export default function Skills() {
 
   useEffect(() => {
     if (isSuccess) {
-      setskills(data);
+      setskills(data.body);
     }
   }, [data]);
 

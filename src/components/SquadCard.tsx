@@ -17,6 +17,7 @@ import Snackbar from "@mui/material/Snackbar";
 import MuiAlert, { AlertProps } from "@mui/material/Alert";
 import UserPopup from "./Popups/UserPopup";
 import { userDataDto } from "../data/DTO/User";
+import useAlert from "./Alerts/useAlert";
 
 const style = {
   position: "absolute" as "absolute",
@@ -31,6 +32,7 @@ const style = {
 };
 
 export default function SquadCard(props: { user: userDataDto }) {
+  const [AlertComponent, showAlert] = useAlert();
   const { id, name: appuser, work_title } = props.user;
   const [deleteUser, deleteUserRes] = useDeleteUserMutation();
   const [open, setOpen] = useState(false);
@@ -62,29 +64,21 @@ export default function SquadCard(props: { user: userDataDto }) {
 
   const removeUser = () => {
     deleteUser(id as string);
-    if (deleteUserRes.isSuccess) {
-      setopenSuccess(true);
-      handleCloseDelete();
-    }
+    handleCloseDelete();
   };
+
+  useEffect(() => {
+    if (deleteUserRes.isSuccess) {
+      showAlert([deleteUserRes.data.messages[0].message], "success");
+    }
+    if (deleteUserRes.isError) {
+      showAlert([deleteUserRes?.data?.messages[0].message], "error");
+    }
+  }, [deleteUserRes]);
 
   return (
     <>
-      {/* //TODO */}
-      {/* <SuccessAlert open={isSuccess} /> */}
-      <Snackbar
-        open={openSuccess}
-        autoHideDuration={2000}
-        onClose={handleCloseModal}
-      >
-        <Alert
-          onClose={handleCloseModal}
-          severity="success"
-          sx={{ width: "100%" }}
-        >
-          User deleted successfully
-        </Alert>
-      </Snackbar>
+      <AlertComponent />
       <Card sx={{ display: "flex", width: 300 }}>
         <CardMedia
           component="img"
@@ -114,7 +108,7 @@ export default function SquadCard(props: { user: userDataDto }) {
       </Card>
       <UserPopup open={open} setOpen={setOpen} edit={true} user={props.user} />
       {/* //possible refactor */}
-      {/* //delete confirmation */}
+      {/* TODO://delete confirmation */}
       <Modal
         open={openDelete}
         onClose={handleCloseDelete}
@@ -122,12 +116,7 @@ export default function SquadCard(props: { user: userDataDto }) {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-          <Typography
-            id="modal-modal-title"
-            variant="h6"
-            component="h2"
-            color="ButtonFace"
-          >
+          <Typography id="modal-modal-title" variant="h6" component="h2">
             Are you sure you want to delete this user?
           </Typography>
           <br />

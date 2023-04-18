@@ -80,13 +80,7 @@ export default function Register() {
     setopenError(false);
   };
 
-  useEffect(() => {
-    if (isGetSuccess)
-      console.log(
-        "🚀 ~ file: Register.tsx:85 ~ useEffect ~ jobPositions:",
-        jobPositions
-      );
-  }, [isGetSuccess]);
+
 
   const checkUserRoleAndRedirect = (userRole: UserRoles) => {
     switch (userRole) {

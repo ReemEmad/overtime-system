@@ -20,7 +20,8 @@ import {
   usePostUserMutation,
   useUpdateUserMutation,
 } from "../../services/user.service";
-import { TextField } from "@mui/material";
+import useAlert from "../Alerts/useAlert";
+import { MenuItem, TextField } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
 import { Save } from "@mui/icons-material";
 import Snackbar from "@mui/material/Snackbar";
@@ -48,6 +49,8 @@ export default function UserPopup(props: {
 }) {
   const { open, setOpen, add = false, edit = false, user } = props;
 
+  const [AlertComponent, showAlert] = useAlert();
+
   const [username, setusername] = useState(add ? "" : user?.name);
   const [userTitle, setuserTitle] = useState(add ? "" : user?.work_title);
   const [userPhone, setuserPhone] = useState(add ? "" : user?.phone);
@@ -59,8 +62,15 @@ export default function UserPopup(props: {
   const [userPassword, setuserPassword] = useState(add ? "" : user?.password);
   const [openSuccess, setopenSuccess] = useState(false);
 
-  const [postUser, { isLoading, isSuccess }] = usePostUserMutation();
+  const [postUser, postUserRes] = usePostUserMutation();
   const [updateUser, updateUserRes] = useUpdateUserMutation();
+  const [errorMessages, seterrorMessages] = useState([]);
+  const [offices, setoffices] = useState([]);
+
+  useEffect(() => {
+    const constants = JSON.parse(localStorage.getItem("constants")!);
+    setoffices(constants?.offices);
+  }, []);
 
   const handleClose = () => setOpen(false);
 
@@ -119,18 +129,38 @@ export default function UserPopup(props: {
   };
 
   useEffect(() => {
-    if (isSuccess) {
-      setopenSuccess(true);
+    if (postUserRes.isSuccess) {
+      showAlert([postUserRes.data.messages[0].message], "success");
       handleClose();
     }
-  }, [isSuccess]);
+    if (postUserRes.isError) {
+      const errorRes: any = postUserRes.error;
+      let data: any = [...errorMessages];
+      errorRes.data.messages.map((message: any) => data.push(message.message));
+      seterrorMessages(data);
+      showAlert([data.join(" ")], "error");
+      seterrorMessages([]);
+    }
+  }, [postUserRes.isSuccess, postUserRes.isError]);
 
   useEffect(() => {
     if (updateUserRes.isSuccess) {
-      setopenSuccess(true);
+      const res: any = updateUserRes?.data;
+      showAlert([res.messages[0].message], "success");
       handleClose();
     }
   }, [updateUserRes.isSuccess]);
+
+  useEffect(() => {
+    if (updateUserRes.isError) {
+      const errorRes: any = updateUserRes.error;
+      let data: any = [...errorMessages];
+      errorRes.data.messages.map((message: any) => data.push(message.message));
+      seterrorMessages(data);
+      showAlert([data.join(" ")], "error");
+      seterrorMessages([]);
+    }
+  }, [updateUserRes.isError]);
 
   return (
     <div>
@@ -147,6 +177,7 @@ export default function UserPopup(props: {
           {add ? "User added successfully" : "User edited successfully"}
         </Alert>
       </Snackbar>
+      <AlertComponent />
       <Modal
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"
@@ -198,13 +229,25 @@ export default function UserPopup(props: {
                 value={userPhone}
                 onChange={(e) => setuserPhone(e.target.value)}
               />
+              <br />
               <TextField
-                id="filled-basic"
-                label="Work location"
+                name="work_location"
+                id="filled-select-currency"
+                select
+                label="Select work location"
+                defaultValue=""
                 variant="filled"
                 value={userWorkLocation}
                 onChange={(e) => setuserWorkLocation(e.target.value)}
-              />
+                sx={{ width: "69%" }}
+              >
+                {offices.map((option) => (
+                  <MenuItem key={option} value={option}>
+                    {option}
+                  </MenuItem>
+                ))}
+              </TextField>
+              <br />
               <FormControl sx={{ mt: 2 }}>
                 <FormLabel id="demo-row-radio-buttons-group-label">
                   Role
@@ -235,9 +278,9 @@ export default function UserPopup(props: {
             {add && (
               <Box sx={{ mt: 3, pr: 1 }}>
                 <LoadingButton
-                  loading={isLoading}
+                  loading={postUserRes.isLoading}
                   loadingPosition="start"
-                  startIcon={isLoading ? <Save /> : null}
+                  startIcon={postUserRes.isLoading ? <Save /> : null}
                   variant="contained"
                   onClick={postNewUser}
                 >

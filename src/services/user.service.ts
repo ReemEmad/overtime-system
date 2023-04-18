@@ -62,7 +62,7 @@ const userExtendedApi = mainProvider.injectEndpoints({
       },
       invalidatesTags: ["users"],
     }),
-    deleteUser: builder.mutation<userDataDto, string>({
+    deleteUser: builder.mutation<userDataDto | any, string>({
       query: (id) => ({
         url: `/user/${id}`,
         method: "DELETE",

@@ -36,18 +36,17 @@ const useAlert = () => {
     if (timeoutRef.current) {
       clearTimeout(timeoutRef.current);
     }
-
     setOpen(true);
     setMessage(message);
     setType(type);
     timeoutRef.current = setTimeout(() => {
       handleClose();
-    }, 2000);
+    }, 5000);
   };
 
   const AlertComponent = () => {
     return (
-      <Snackbar open={open} autoHideDuration={2000} onClose={handleClose}>
+      <Snackbar open={open} autoHideDuration={5000} onClose={handleClose}>
         <Alert onClose={handleClose} severity={type} sx={{ width: "100%" }}>
           {message}
         </Alert>
