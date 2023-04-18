@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 
 function SquadLeadLanding() {
   const navigate = useNavigate();
+
   const isAuthorized = useRoleRedirect(
     [UserRoles.SquadLead],
     appRoutes.SIGN_IN,

@@ -19,6 +19,7 @@ import AdminLanding from "../../pages/AdminLanding";
 import { Link, Outlet, useNavigate } from "react-router-dom";
 import { getUserRole } from "../../utils/utility";
 import { appRoutes } from "../../data/constants/appRoutes";
+import { UserRoles } from "../../data/DTO/Roles";
 
 const drawerWidth = 240;
 
@@ -42,34 +43,50 @@ export default function SideMenu() {
         >
           <Toolbar />
           <Divider />
-          <List>
-            {["Listed Jobs"].map((text) => (
-              <ListItem key={text} disablePadding>
-                <ListItemButton
-                  onClick={() => navigate(appRoutes.ADMIN_LANDING_JOBS)}
-                >
-                  <ListItemIcon>
-                    <AddBoxIcon />
-                  </ListItemIcon>
-                  <ListItemText primary={text} />
-                </ListItemButton>
-              </ListItem>
-            ))}
-          </List>
-          <List>
-            {["Listed Skills"].map((text) => (
-              <ListItem key={text} disablePadding>
-                <ListItemButton
-                  onClick={() => navigate(appRoutes.ADMIN_LANDING_SKILLS)}
-                >
-                  <ListItemIcon>
-                    <AddBoxIcon />
-                  </ListItemIcon>
-                  <ListItemText primary={text} />
-                </ListItemButton>
-              </ListItem>
-            ))}
-          </List>
+          {role === UserRoles.Admin && (
+            <List>
+              {["Listed Jobs"].map((text) => (
+                <ListItem key={text} disablePadding>
+                  <ListItemButton
+                    onClick={() => navigate(appRoutes.ADMIN_LANDING_JOBS)}
+                  >
+                    <ListItemIcon>
+                      <AddBoxIcon />
+                    </ListItemIcon>
+                    <ListItemText primary={text} />
+                  </ListItemButton>
+                </ListItem>
+              ))}
+              {["Listed Skills"].map((text) => (
+                <ListItem key={text} disablePadding>
+                  <ListItemButton
+                    onClick={() => navigate(appRoutes.ADMIN_LANDING_SKILLS)}
+                  >
+                    <ListItemIcon>
+                      <AddBoxIcon />
+                    </ListItemIcon>
+                    <ListItemText primary={text} />
+                  </ListItemButton>
+                </ListItem>
+              ))}
+            </List>
+          )}
+          {role === UserRoles.SquadLead && (
+            <List>
+              {["quick links: TBD"].map((text) => (
+                <ListItem key={text} disablePadding>
+                  <ListItemButton
+                  // onClick={() => navigate(appRoutes.ADMIN_LANDING_JOBS)}
+                  >
+                    <ListItemIcon>
+                      <AddBoxIcon />
+                    </ListItemIcon>
+                    <ListItemText primary={text} />
+                  </ListItemButton>
+                </ListItem>
+              ))}
+            </List>
+          )}
         </Drawer>
         <Box
           component="main"
