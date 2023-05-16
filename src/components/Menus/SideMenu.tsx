@@ -69,6 +69,14 @@ export default function SideMenu() {
                   </ListItemButton>
                 </ListItem>
               ))}
+              {["Signout"].map((text) => (
+                <ListItem key={text} disablePadding>
+                  <ListItemButton onClick={() => navigate(appRoutes.SIGNOUT)}>
+                    <ListItemIcon>{/* <AddBoxIcon /> */}</ListItemIcon>
+                    <ListItemText primary={text} />
+                  </ListItemButton>
+                </ListItem>
+              ))}
             </List>
           )}
           {role === UserRoles.SquadLead && (
@@ -81,6 +89,14 @@ export default function SideMenu() {
                     <ListItemIcon>
                       <AddBoxIcon />
                     </ListItemIcon>
+                    <ListItemText primary={text} />
+                  </ListItemButton>
+                </ListItem>
+              ))}
+              {["Signout"].map((text) => (
+                <ListItem key={text} disablePadding>
+                  <ListItemButton onClick={() => navigate(appRoutes.SIGNOUT)}>
+                    <ListItemIcon>{/* <AddBoxIcon /> */}</ListItemIcon>
                     <ListItemText primary={text} />
                   </ListItemButton>
                 </ListItem>

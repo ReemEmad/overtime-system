@@ -35,7 +35,7 @@ function SkillCard(props: { Skill: skillDto; children: ReactNode }) {
             {SkillName}
           </Typography>
           <Typography sx={{ mb: 1.5 }} color="text.secondary">
-            {getCreatedDate(created_date)}
+            Created on: {getCreatedDate(created_date)}
           </Typography>
           <Typography variant="body2">{description}</Typography>
         </CardContent>
