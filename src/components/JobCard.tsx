@@ -22,6 +22,7 @@ import {
 import { Edit, Delete, Save } from "@mui/icons-material";
 import { JobDTO } from "../data/DTO/Job";
 import JobPopup from "./Popups/JobPopup";
+import { getCreatedDate } from "../utils/getDate";
 
 function JobCard(props: { job: JobDTO; children: ReactNode }) {
   const { created_date, name: jobName, description } = props.job;
@@ -34,9 +35,7 @@ function JobCard(props: { job: JobDTO; children: ReactNode }) {
             {jobName}
           </Typography>
           <Typography sx={{ mb: 1.5 }} color="text.secondary">
-            {new Date(created_date).getUTCDate()}-
-            {new Date(created_date).getMonth() + 1}-
-            {new Date(created_date).getFullYear()}
+            created on: {getCreatedDate(created_date)}
           </Typography>
           <Typography variant="body2">{description}</Typography>
         </CardContent>

@@ -18,6 +18,8 @@ import { useGetAppConstantsQuery } from "./services/app.service";
 import CandidateLanding from "./pages/CandidateLanding";
 import Signout from "./pages/Signout";
 import SquadLeadLanding from "./pages/SquadLeadLanding";
+import { LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -43,7 +45,7 @@ const router = createBrowserRouter(
   )
 );
 
-function App() {
+function App({ children }) {
   const { data, isSuccess } = useGetAppConstantsQuery({});
 
   useEffect(() => {
@@ -52,7 +54,12 @@ function App() {
     }
   }, [isSuccess]);
 
-  return <RouterProvider router={router} />;
+  return (
+    <LocalizationProvider dateAdapter={AdapterDayjs}>
+      <RouterProvider router={router} />
+      {children}
+    </LocalizationProvider>
+  );
 }
 
 export default App;

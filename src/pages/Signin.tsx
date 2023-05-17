@@ -58,7 +58,7 @@ export default function Signin() {
         navigate(appRoutes.ADMIN_LANDING);
         break;
       case UserRoles.SquadLead:
-        navigate(appRoutes.ADMIN_LANDING);
+        navigate(appRoutes.SQUADLEAD_LANDING);
         break;
       case UserRoles.Admin:
         navigate(appRoutes.ADMIN_LANDING);
