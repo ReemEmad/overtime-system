@@ -2,7 +2,7 @@ import { JobDTO } from "../data/DTO/Job";
 import { JobToEdit, JobToPost } from "../data/DTO/JobToPost";
 import { mainProvider } from "./provider/main.provider";
 
-const skillExtendedApi = mainProvider.injectEndpoints({
+const positionsExtendedApi = mainProvider.injectEndpoints({
   endpoints: (builder) => ({
     getProjects: builder.query({
       query: () => {
@@ -49,18 +49,18 @@ const skillExtendedApi = mainProvider.injectEndpoints({
       },
       invalidatesTags: ["positions"],
     }),
-    updateSkillPosition: builder.mutation<any, any>({
-      query: (args) => {
-        const { jobId } = args;
-        return {
-          url: `/job-skills/${jobId}`,
-          method: "Post",
-          body: {
-            skill_list: [],
-          },
-        };
-      },
-    }),
+    // updateSkillPosition: builder.mutation<any, any>({
+    //   query: (args) => {
+    //     const { jobId } = args;
+    //     return {
+    //       url: `/job-skills/${jobId}`,
+    //       method: "Post",
+    //       body: {
+    //         skill_list: [],
+    //       },
+    //     };
+    //   },
+    // }),
     updatePosition: builder.mutation<
       JobToEdit,
       { id: string | undefined; body: JobToEdit }
@@ -79,6 +79,16 @@ const skillExtendedApi = mainProvider.injectEndpoints({
       }),
       invalidatesTags: ["positions"],
     }),
+    deleteSkillPosition: builder.mutation<any, any>({
+      query: (args) => {
+        const { jobId, skillId } = args;
+        return {
+          url: `/job-skill/${jobId}/${skillId}`,
+          method: "DELETE",
+        };
+      },
+      invalidatesTags: ["positions"],
+    }),
   }),
 });
 
@@ -88,4 +98,5 @@ export const {
   usePostPositionsMutation,
   useUpdatePositionMutation,
   useDeletePositionMutation,
-} = skillExtendedApi;
+  useDeleteSkillPositionMutation,
+} = positionsExtendedApi;
