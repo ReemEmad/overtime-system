@@ -129,13 +129,13 @@ export default function Jobs() {
           {jobs.map((job: JobDTO) => (
             <Grid item xs={4} key={job.id}>
               <JobCard job={job}>
-                <Delete
+                {/* <Delete
                   color="error"
                   onClick={() => {
                     setJobId(job.id);
                     setopenDelete(true);
                   }}
-                />
+                /> */}
               </JobCard>
             </Grid>
           ))}

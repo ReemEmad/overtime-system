@@ -20,6 +20,9 @@ import Signout from "./pages/Signout";
 import SquadLeadLanding from "./pages/SquadLeadLanding";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { StyledEngineProvider } from "@mui/material/styles";
+import { ThemeProvider } from "@mui/material";
+import theme from "./theme";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -45,7 +48,8 @@ const router = createBrowserRouter(
   )
 );
 
-function App({ children }) {
+function App(props: { children: any }) {
+  const { children } = props;
   const { data, isSuccess } = useGetAppConstantsQuery({});
 
   useEffect(() => {
@@ -55,10 +59,12 @@ function App({ children }) {
   }, [isSuccess]);
 
   return (
-    <LocalizationProvider dateAdapter={AdapterDayjs}>
-      <RouterProvider router={router} />
-      {children}
-    </LocalizationProvider>
+    <ThemeProvider theme={theme}>
+      <LocalizationProvider dateAdapter={AdapterDayjs}>
+        <RouterProvider router={router} />
+        {children}
+      </LocalizationProvider>
+    </ThemeProvider>
   );
 }
 

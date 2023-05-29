@@ -129,13 +129,13 @@ export default function Skills() {
           {skills.map((skill: skillDto) => (
             <Grid item xs={4} key={skill.id}>
               <SkillCard Skill={skill}>
-                <Delete
+                {/* <Delete
                   color="error"
                   onClick={() => {
                     setskillId(skill.id);
                     setopenDelete(true);
                   }}
-                />
+                /> */}
               </SkillCard>
             </Grid>
           ))}

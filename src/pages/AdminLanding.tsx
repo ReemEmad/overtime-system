@@ -7,6 +7,7 @@ import {
   CircularProgress,
   Typography,
   Button,
+  Container,
 } from "@mui/material";
 
 import { useGetUsersQuery } from "../services/user.service";
@@ -57,7 +58,11 @@ export default function AdminLanding() {
 
   useEffect(() => {
     if (isSuccess) {
-      setUsers(data.body);
+      if (selectedRole) {
+        filterUsersByRole();
+      } else {
+        setUsers(data.body);
+      }
     }
   }, [data]);
 
@@ -65,7 +70,7 @@ export default function AdminLanding() {
     if (isSuccess) {
       filterUsersByRole();
     }
-  }, [isSuccess, selectedRole]);
+  }, [selectedRole]);
 
   return (
     <>
@@ -74,8 +79,10 @@ export default function AdminLanding() {
           display: "flex",
           flexGrow: 1,
           flexDirection: "row",
-          justifyContent: "space-around",
-          alignItems: "center",
+          justifyContent: "space-between",
+          alignItems: "end",
+          // paddingX: "24px",
+          marginBottom: "1rem",
         }}
       >
         <Button
@@ -86,7 +93,7 @@ export default function AdminLanding() {
         >
           Add new user
         </Button>
-        <FormControl variant="filled" sx={{ minWidth: 220, mb: 2 }}>
+        <FormControl variant="outlined" sx={{ width: "200px" }}>
           <InputLabel id="demo-simple-select-label">
             Choose user role
           </InputLabel>
@@ -100,14 +107,15 @@ export default function AdminLanding() {
           >
             <MenuItem value="all">All</MenuItem>
             <MenuItem value="squadlead">Squad Lead</MenuItem>
-            <MenuItem value="cfo">Cfo</MenuItem>
+            <MenuItem value="cfo">CFO</MenuItem>
           </Select>
         </FormControl>
       </Box>
       {isLoading && <CircularProgress color="inherit" />}
-      <Grid container spacing={1} ml="270px">
+
+      <Grid container spacing={3}>
         {users.map((user: any) => (
-          <Grid item xs={4} key={user.phone}>
+          <Grid key={user.phone} item xs={12} sm={6} md={3}>
             <SquadCard user={user} />
           </Grid>
         ))}
