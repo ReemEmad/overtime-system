@@ -27,11 +27,12 @@ export default function SideMenu() {
   const role = getUserRole();
   const navigate = useNavigate();
   return (
-    <>
-      <Box sx={{ display: "flex" }}>
+    <Box sx={{ display: "flex", width: "100%", minHeight: "100%" }}>
+      <Box sx={{ flex: "1 0 15%" }}>
         <Drawer
           sx={{
-            width: drawerWidth,
+            width: "100%",
+            position: "unset",
             flexShrink: 0,
             "& .MuiDrawer-paper": {
               width: drawerWidth,
@@ -41,7 +42,12 @@ export default function SideMenu() {
           variant="permanent"
           anchor="left"
         >
-          <Toolbar />
+          <Box sx={{ padding: "1rem" }}>
+            <img
+              width="150px"
+              src="https://social.engagedly.com/uploads/62f54b89-db72-4076-9499-3547c51de48a/62f54b89-db72-4076-9499-3547c51de48a/social/picture/file/4254624/reduced_Integrant-Brand-Logo-Colored-2020.png"
+            />
+          </Box>
           <Divider />
           {role === UserRoles.Admin && (
             <List>
@@ -104,14 +110,10 @@ export default function SideMenu() {
             </List>
           )}
         </Drawer>
-        <Box
-          component="main"
-          sx={{ flexGrow: 1, bgcolor: "background.default", p: 3 }}
-        >
-          <Toolbar />
-        </Box>
       </Box>
-      <Outlet />
-    </>
+      <Box sx={{ backgroundColor: "#f8f8f8", padding: "40px", width: "100%" }}>
+        <Outlet />
+      </Box>
+    </Box>
   );
 }

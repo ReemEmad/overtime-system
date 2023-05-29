@@ -1,5 +1,7 @@
 import { useEffect, useState, forwardRef } from "react";
 import src from "../assets/avatar-library/avatar-1.jpg";
+import Avatar from "@mui/material/Avatar";
+import Stack from "@mui/material/Stack";
 import {
   Box,
   Card,
@@ -9,6 +11,8 @@ import {
   Button,
   Modal,
   TextField,
+  CardActions,
+  IconButton,
 } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
 import { Edit, Delete, Save } from "@mui/icons-material";
@@ -18,6 +22,8 @@ import MuiAlert, { AlertProps } from "@mui/material/Alert";
 import UserPopup from "./Popups/UserPopup";
 import { userDataDto } from "../data/DTO/User";
 import useAlert from "./Alerts/useAlert";
+import { stringAvatar } from "../utils/utility";
+import { useTheme } from "@mui/material/styles";
 
 const style = {
   position: "absolute" as "absolute",
@@ -32,6 +38,7 @@ const style = {
 };
 
 export default function SquadCard(props: { user: userDataDto }) {
+  const theme = useTheme();
   const [AlertComponent, showAlert] = useAlert();
   const { id, name: appuser, work_title } = props.user;
   const [deleteUser, deleteUserRes] = useDeleteUserMutation();
@@ -79,32 +86,41 @@ export default function SquadCard(props: { user: userDataDto }) {
   return (
     <>
       <AlertComponent />
-      <Card sx={{ display: "flex", width: 300 }}>
-        <CardMedia
+      <Card>
+        {/* <CardMedia
           component="img"
           sx={{ width: 100 }}
           image={src}
           alt="avatar"
-        />
-        <Box sx={{ display: "flex", flexDirection: "column" }}>
-          <CardContent sx={{ flex: "1 0 auto" }}>
-            <Typography component="div" variant="h5" textAlign="left">
-              {appuser}
-            </Typography>
-            <Typography
-              variant="subtitle1"
-              color="text.secondary"
-              component="div"
-              textAlign="left"
-            >
-              {work_title}
-            </Typography>
-          </CardContent>
-          <Box sx={{ display: "flex", alignItems: "left", pl: 1, pb: 1 }}>
-            <Edit color="info" onClick={handleOpen} />
+        /> */}
+
+        <CardContent>
+          <Typography component="div" variant="h5" textAlign="left">
+            {appuser}
+          </Typography>
+          <Typography
+            variant="subtitle1"
+            color="text.secondary"
+            component="div"
+            textAlign="left"
+          >
+            {work_title}
+          </Typography>
+        </CardContent>
+        <CardActions disableSpacing>
+          {/* <Box sx={{ display: "flex", alignItems: "left", pl: 1, pb: 1 }}> */}
+          <IconButton aria-label="edit">
+            <Edit
+              color="primary"
+              // sx={{ color: "primary" }}
+              onClick={handleOpen}
+            />
+          </IconButton>
+          <IconButton aria-label="delete">
             <Delete color="error" onClick={() => setopenDelete(true)} />
-          </Box>
-        </Box>
+          </IconButton>
+          {/* </Box> */}
+        </CardActions>
       </Card>
       <UserPopup open={open} setOpen={setOpen} edit={true} user={props.user} />
       {/* //possible refactor */}

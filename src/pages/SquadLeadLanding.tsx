@@ -50,6 +50,7 @@ function SquadLeadLanding() {
   const [positionId, setPostionId] = useState("");
   const [errorMessages, seterrorMessages] = useState([]);
   const navigate = useNavigate();
+
   const isAuthorized = useRoleRedirect(
     [UserRoles.SquadLead],
     appRoutes.SIGN_IN,
@@ -85,16 +86,15 @@ function SquadLeadLanding() {
   return (
     <>
       <Box
-        sx={{
-          // marginLeft: "50%",
-          display: "flex",
-          flexGrow: 1,
-          flexDirection: "column",
-          justifyContent: "space-around",
-          alignItems: "center",
-        }}
+      // sx={{
+      //   // marginLeft: "50%",
+      //   display: "flex",
+      //   flexGrow: 1,
+      //   flexDirection: "column",
+      //   justifyContent: "flex-end",
+      //   alignItems: "center",
+      // }}
       >
-        {isLoading && <CircularProgress />}
         <Button
           variant="contained"
           startIcon={<AddCircle />}
@@ -103,57 +103,37 @@ function SquadLeadLanding() {
         >
           Add a new job position
         </Button>
+        <br />
         {/* <Typography variant="h" component="div">
           Squad landing
         </Typography> */}
-        <Box sx={{ flexGrow: 1 }}>
-          <Grid container spacing={2}>
-            <Grid item xs={4}>
-              <br />
-              {isSuccess &&
-                data.body.map((item: any) => (
-                  <PositionCard jobPosition={item} />
-                ))}
-            </Grid>
-          </Grid>
-        </Box>
-        <PositionPopup add={true} open={open} setOpen={setopen} />
+        {/* <Box> */}
       </Box>
-      <Modal
-        open={openDelete}
-        onClose={handleCloseDelete}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
+      {/* <Box> */}
+      <Box
+        sx={{
+          // marginLeft: "50%",
+          display: "flex",
+          flexGrow: 1,
+          // flexDirection: "column",
+          justifyContent: "start",
+          alignItems: "center",
+          gap: "30px",
+          flexWrap: "wrap",
+        }}
       >
-        <Box sx={style}>
-          <Typography id="modal-modal-title" variant="h6" component="h2">
-            Are you sure you want to delete this skill?
-          </Typography>
-          <br />
-          <Box sx={{ mt: 3 }}>
-            <LoadingButton
-              loading={deletePosRes.isLoading}
-              loadingPosition="start"
-              startIcon={deletePosRes.isLoading ? <Save /> : null}
-              variant="contained"
-              onClick={removePosition}
-              size="small"
-            >
-              Confirm
-            </LoadingButton>
-            <Button
-              variant="contained"
-              onClick={handleCloseDelete}
-              sx={{ mx: 1 }}
-              size="small"
-              color="error"
-            >
-              Cancel
-            </Button>
-          </Box>
-          <Box></Box>
-        </Box>
-      </Modal>
+        {/* <Grid container spacing={3}>
+          <Grid item xs={12} sm={6} md={4}> */}
+        {isSuccess &&
+          data.body.map((item: any) => <PositionCard jobPosition={item} />)}
+        {/* </Grid>
+        </Grid> */}
+      </Box>
+      {/* </Box> */}
+      {/* </Box> */}
+
+      <PositionPopup add={true} open={open} setOpen={setopen} />
+      <p style={{ margin: "auto" }}> {isLoading && <CircularProgress />}</p>
     </>
   );
 }

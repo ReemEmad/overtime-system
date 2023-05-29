@@ -1,20 +1,20 @@
 #root {
   width: 100%;
-  /* max-width: 1280px; */
-  /* padding: 2rem 5rem; */
-  /* text-align: center; */
+  box-sizing: border-box;
 }
 body {
+  box-sizing: border-box;
   /* margin: 0; */
   display: flex;
   /* place-items: center; */
   min-width: 320px;
   min-height: 100vh;
+  margin: 0px;
 }
 
-.css-j204z7-MuiFormControlLabel-root .MuiFormControlLabel-label {
+/* .css-j204z7-MuiFormControlLabel-root .MuiFormControlLabel-label {
   color: black;
-}
+} */
 
 /* .MuiSelect-select,
 .MuiSelect-select {
@@ -26,15 +26,15 @@ body {
   background: white !important;
 } */
 
-.select-items div:hover,
+/* .select-items div:hover,
 .same-as-selected {
   background-color: rgba(218, 39, 39, 0.1);
-}
+} */
 
-.css-d9oaum-MuiSelect-select-MuiInputBase-input-MuiFilledInput-input {
+/* .css-d9oaum-MuiSelect-select-MuiInputBase-input-MuiFilledInput-input { */
   /* background: rgb(222, 222, 222) !important; */
-  border: 1px !important;
-}
+  /* border: 1px !important; */
+/* } */
 
 /* input,
 select,

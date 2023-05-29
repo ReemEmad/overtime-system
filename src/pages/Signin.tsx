@@ -18,6 +18,7 @@ import useAuthorization from "../hooks/useAuthorization";
 import { UserRoles } from "../data/DTO/Roles";
 import { appRoutes } from "../data/constants/appRoutes";
 import useAlert from "../components/Alerts/useAlert";
+import src from "../assets/login.svg";
 
 const style = {
   position: "absolute" as "absolute",
@@ -88,59 +89,104 @@ export default function Signin() {
 
   return (
     <>
-      <Box
-        sx={{
-          display: "flex",
-          placeItems: "center",
-          justifyContent: "center",
-          gap: "40px",
-          margin: "auto",
-          height: "100vh",
-        }}
-      >
-        <Box>
-          <img
-            width="400px"
-            src="https://social.engagedly.com/uploads/62f54b89-db72-4076-9499-3547c51de48a/62f54b89-db72-4076-9499-3547c51de48a/social/picture/file/4254624/reduced_Integrant-Brand-Logo-Colored-2020.png"
-          />
-        </Box>
-        <Divider orientation="vertical" />
-        <Box>
-          <Typography
-            component="div"
-            variant="h5"
-            textAlign="left"
-            color="GrayText"
-            mb={3}
+      <Box sx={{ position: "relative" }}>
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            // placeItems: "center",
+            // justifyContent: "center",
+            // gap: "40px",
+            // margin: "auto",
+            maxHeight: "100vh",
+          }}
+        >
+          <Box
+            sx={{
+              backgroundColor: "#effefd",
+              height: "100vh",
+              alignItems: "center",
+              display: "flex",
+              justifyContent: "center",
+              flexDirection: "column",
+              width: "50%",
+              position: "relative",
+            }}
           >
-            Please sign in to your account
+            <Box sx={{ padding: "1rem" }}>
+              <img
+                width="200px"
+                src="https://social.engagedly.com/uploads/62f54b89-db72-4076-9499-3547c51de48a/62f54b89-db72-4076-9499-3547c51de48a/social/picture/file/4254624/reduced_Integrant-Brand-Logo-Colored-2020.png"
+              />
+            </Box>
+
+            <img width="65%" src={src} />
+          </Box>
+          {/* <Divider orientation="vertical" /> */}
+
+          <Box sx={{ marginLeft: "50px" }}>
+            <Typography
+              component="div"
+              variant="h5"
+              // textAlign="left"
+              // color="GrayText"
+              mb={3}
+            >
+              <Typography
+                component="div"
+                variant="h4"
+                // textAlign="left"
+                // color=""
+                mb={3}
+              >
+                <Box sx={{ fontWeight: "bold" }}>Welcome Back!</Box>
+              </Typography>
+              Please sign in to your account
+            </Typography>
+            <Box>
+              <TextField
+                id="outlined-basic"
+                label="Email"
+                variant="outlined"
+                fullWidth
+                value={userEmail}
+                onChange={(e) => setuserEmail(e.target.value)}
+              />
+            </Box>
+            <br />
+            <Box>
+              <TextField
+                id="outlined-basic"
+                label="Password"
+                variant="outlined"
+                fullWidth
+                type="password"
+                value={userPassword}
+                onChange={(e) => setuserPassword(e.target.value)}
+              />
+            </Box>
+            <br />
+            <Button
+              variant="contained"
+              size="medium"
+              onClick={confirmLogin}
+              fullWidth
+            >
+              Login
+            </Button>
+          </Box>
+        </Box>
+        <Box
+          sx={{
+            position: "absolute",
+            bottom: "0px",
+            marginY: "1rem",
+            marginX: "1.5rem",
+          }}
+        >
+          <Typography variant="body1" gutterBottom>
+            &copy; All rights reserved 2023
           </Typography>
-          <Box>
-            <TextField
-              id="filled-basic"
-              label="Email"
-              variant="filled"
-              fullWidth
-              value={userEmail}
-              onChange={(e) => setuserEmail(e.target.value)}
-            />
-          </Box>
-          <br />
-          <Box>
-            <TextField
-              id="filled-basic"
-              label="Password"
-              variant="filled"
-              fullWidth
-              type="password"
-              value={userPassword}
-              onChange={(e) => setuserPassword(e.target.value)}
-            />
-          </Box>
-          <br />
-          <Button variant="contained" size="medium" onClick={confirmLogin}>
-            Login
-          </Button>
         </Box>
       </Box>
       <AlertComponent />

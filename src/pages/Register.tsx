@@ -206,9 +206,9 @@ export default function Register() {
                 <Box>
                   <TextField
                     name="candidateName"
-                    id="filled-basic"
+                    id="outlined-basic"
                     label="Name"
-                    variant="filled"
+                    variant="outlined"
                     onChange={handleChange}
                     fullWidth
                     value={values.candidateName}
@@ -218,9 +218,9 @@ export default function Register() {
                 <Box>
                   <TextField
                     name="email"
-                    id="filled-basic"
+                    id="outlined-basic"
                     label="Email"
-                    variant="filled"
+                    variant="outlined"
                     onChange={handleChange}
                     fullWidth
                     value={values.email}
@@ -230,9 +230,9 @@ export default function Register() {
                 <Box>
                   <TextField
                     name="password"
-                    id="filled-basic"
+                    id="outlined-basic"
                     label="Password"
-                    variant="filled"
+                    variant="outlined"
                     onChange={handleChange}
                     fullWidth
                     type="password"
@@ -243,9 +243,9 @@ export default function Register() {
                 <Box>
                   <TextField
                     name="phone"
-                    id="filled-basic"
+                    id="outlined-basic"
                     label="Phone"
-                    variant="filled"
+                    variant="outlined"
                     onChange={handleChange}
                     fullWidth
                     type="text"
@@ -256,10 +256,10 @@ export default function Register() {
                 <Box>
                   <TextField
                     name="squadLead"
-                    id="filled-select-currency"
+                    id="demo-simple-select"
                     label="Select Squad Lead"
                     select
-                    variant="filled"
+                    variant="outlined"
                     onChange={handleChange}
                     fullWidth
                     type="text"
@@ -276,10 +276,10 @@ export default function Register() {
                 <Box>
                   <TextField
                     name="work_title"
-                    id="filled-basic"
+                    id="demo-simple-select"
                     label="Work Title"
                     select
-                    variant="filled"
+                    variant="outlined"
                     onChange={handleChange}
                     fullWidth
                     type="text"
@@ -296,11 +296,11 @@ export default function Register() {
                 <br />
                 <TextField
                   name="work_location"
-                  id="filled-select-currency"
+                  id="demo-simple-select"
                   select
                   label="Select work location"
                   defaultValue=""
-                  variant="filled"
+                  variant="outlined"
                   value={values.work_location}
                   onChange={handleChange}
                   fullWidth
