@@ -17,7 +17,7 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import FormControl from "@mui/material/FormControl";
 import FormLabel from "@mui/material/FormLabel";
 import { useGetSkillsQuery } from "../../services/skill.service";
-import { Theme, useTheme } from "@mui/material/styles";
+
 
 import {
   Chip,
@@ -41,6 +41,7 @@ import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import dayjs, { Dayjs } from "dayjs";
 import { useGetJobsQuery } from "../../services/job.service";
+import useAlert from "../Alerts/useAlert";
 
 const style = {
   position: "absolute" as "absolute",
@@ -78,20 +79,19 @@ export default function PositionPopup(props: {
     add ? 0 : position?.job_weekly_hours_required
   );
 
+  const [AlertComponent, showAlert] = useAlert();
   const { data: jobPositions, isSuccess: isGetPositionsSuccess } =
     useGetJobsQuery({
       page_number: 0,
       page_size: 0,
     });
 
-  const [openSuccess, setopenSuccess] = useState(false);
   const { data, isSuccess: isGetSuccess } = useGetProjectsQuery({});
   const { data: skills, isSuccess: isGetSkills } = useGetSkillsQuery({
     page_number: 0,
     page_size: 0,
   });
-  const [postJob, { isLoading, isSuccess }] = usePostPositionsMutation();
-  const [updateJob, updateJobRes] = useUpdatePositionMutation();
+  const [postJob, postJobRes] = usePostPositionsMutation();
 
   useEffect(() => {
     if (isGetSuccess) {
@@ -159,92 +159,33 @@ export default function PositionPopup(props: {
     return intersection;
   }
 
-  // const getStyles = (
-  //   name: string,
-  //   personName: readonly string[],
-  //   theme: Theme
-  // ) => {
-  //   return {
-  //     fontWeight:
-  //       personName.indexOf(name) === -1
-  //         ? theme.typography.fontWeightRegular
-  //         : theme.typography.fontWeightMedium,
-  //   };
-  // };
-
   useEffect(() => {
     const similarSkillIds = compareSkills(jobSkills, skillsSelected);
     setskillIds(similarSkillIds);
   }, [skillsSelected]);
-
-  const Alert = forwardRef<HTMLDivElement, AlertProps>(function Alert(
-    props,
-    ref
-  ) {
-    return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
-  });
-
-  const handleCloseModal = (
-    event?: React.SyntheticEvent | Event,
-    reason?: string
-  ) => {
-    if (reason === "clickaway") {
-      return;
-    }
-    setopenSuccess(false);
-  };
-
-  useEffect(() => {
-    if (isSuccess) {
-      setopenSuccess(true);
-      handleClose();
-    }
-  }, [isSuccess]);
-
-  useEffect(() => {
-    if (updateJobRes.isSuccess) {
-      setopenSuccess(true);
-      handleClose();
-    }
-  }, [updateJobRes.isSuccess]);
 
   const handleChange = (event: SelectChangeEvent<typeof skillsSelected>) => {
     const {
       target: { value },
     } = event;
 
-    setSkillsSelected(
-      // On autofill we get a stringified value.
-      typeof value === "string" ? value.split(",") : value
-    );
+    setSkillsSelected(typeof value === "string" ? value.split(",") : value);
   };
 
-  const ITEM_HEIGHT = 48;
-  const ITEM_PADDING_TOP = 8;
-  const MenuProps = {
-    PaperProps: {
-      style: {
-        maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-        width: 250,
-      },
-    },
-  };
+  useEffect(() => {
+    if (postJobRes.isSuccess) {
+      showAlert([postJobRes.data.messages[0].message], "success");
+      handleClose();
+    }
+    if (postJobRes.isError) {
+      console.log(postJobRes);
+      showAlert([postJobRes.error.data.messages[0].description], "error");
+    }
+  }, [postJobRes.isSuccess, postJobRes.isError]);
 
   return (
     <div>
-      <Snackbar
-        open={openSuccess}
-        autoHideDuration={2000}
-        onClose={handleCloseModal}
-      >
-        <Alert
-          onClose={handleCloseModal}
-          severity="success"
-          sx={{ width: "100%" }}
-        >
-          {add ? "position added successfully" : "position edited successfully"}
-        </Alert>
-      </Snackbar>
+      <AlertComponent />
       <Modal
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"
@@ -262,60 +203,64 @@ export default function PositionPopup(props: {
             <Box>
               <TextField
                 fullWidth
-                id="filled-basic"
+                id="outline-basic"
                 label="Job Name"
-                variant="filled"
+                variant="outlined"
                 value={jobTitle}
                 onChange={(e) => setjobTitle(e.target.value)}
               />
-              <Box>
-                <TextField
-                  name="work_title"
-                  id="filled-basic"
-                  label="Work Title"
-                  select
-                  variant="filled"
-                  onChange={(e: any) => {
-                    setworkTitle(e.target.value);
-                  }}
-                  fullWidth
-                  type="text"
-                  value={work_title}
-                >
-                  {isGetSuccess &&
-                    jobPositions?.body.map((option: any) => (
-                      <MenuItem key={option.id} value={option.name}>
-                        {option.name}
-                      </MenuItem>
-                    ))}
-                </TextField>
-              </Box>
+              <br />
+              <br />
+
+              <TextField
+                name="work_title"
+                id="outline-basic"
+                label="Work Title"
+                select
+                variant="outlined"
+                onChange={(e: any) => {
+                  setworkTitle(e.target.value);
+                }}
+                fullWidth
+                type="text"
+                value={work_title}
+              >
+                {isGetSuccess &&
+                  jobPositions?.body.map((option: any) => (
+                    <MenuItem key={option.id} value={option.name}>
+                      {option.name}
+                    </MenuItem>
+                  ))}
+              </TextField>
+              <br />
               <br />
               <TextField
                 fullWidth
-                id="filled-basic"
+                id="outline-basic"
                 label="Tpl Name"
-                variant="filled"
+                variant="outlined"
                 value={tplName}
                 onChange={(e) => settplName(e.target.value)}
               />
               <br />
+              <br />
               <TextField
                 fullWidth
                 type="number"
-                id="filled-basic"
+                id="outline-basic"
                 label="Weekly hours required"
-                variant="filled"
+                variant="outlined"
                 value={weeklyHours}
                 onChange={(e) => setweeklyHours(+e.target.value)}
               />
               <br />
+              <br />
               <TextField
                 name="project_name"
-                id="filled-select-currency"
+                id="outline-basic"
                 select
                 label="Select Project Name"
-                variant="filled"
+                variant="outlined"
                 value={currentProject}
                 onChange={(e: any) => {
                   setCurruentProject(e.target.value);
@@ -380,32 +325,18 @@ export default function PositionPopup(props: {
               </DemoContainer>
             </Box>
             <br />
-            {add && (
-              <Box sx={{ mt: 3, pr: 1 }}>
-                <LoadingButton
-                  loading={isLoading}
-                  loadingPosition="start"
-                  startIcon={isLoading ? <Save /> : null}
-                  variant="contained"
-                  onClick={postNewJob}
-                >
-                  Ok
-                </LoadingButton>
-              </Box>
-            )}
-            {edit && (
-              <Box sx={{ mt: 3, pr: 1 }}>
-                <LoadingButton
-                  loading={updateJobRes.isLoading}
-                  loadingPosition="start"
-                  startIcon={updateJobRes.isLoading ? <Save /> : null}
-                  variant="contained"
-                  onClick={editJob}
-                >
-                  Ok
-                </LoadingButton>
-              </Box>
-            )}
+
+            <Box sx={{ mt: 3, pr: 1 }}>
+              <LoadingButton
+                loading={postJobRes.isLoading}
+                loadingPosition="start"
+                startIcon={postJobRes.isLoading ? <Save /> : null}
+                variant="contained"
+                onClick={postNewJob}
+              >
+                Ok
+              </LoadingButton>
+            </Box>
           </Box>
         </Fade>
       </Modal>
