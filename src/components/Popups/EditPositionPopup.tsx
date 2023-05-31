@@ -49,6 +49,7 @@ export default function EditPositionPopup(props: {
     id: position.project_id,
     name: position.project_name,
   });
+
   const [deleteSkill, deleteSkillRes] = useDeleteSkillPositionMutation();
 
   const [jobTitle, setjobTitle] = useState(position?.job_name);
@@ -138,6 +139,15 @@ export default function EditPositionPopup(props: {
   }, [updateJobRes.isSuccess, updateJobRes.isError]);
 
   useEffect(() => {
+    if (deleteSkillRes.isSuccess) {
+      showAlert([deleteSkillRes.data.messages[0].message], "success");
+    }
+    if (deleteSkillRes.isError) {
+      showAlert([updateJobRes!.data!.messages[0].message], "error");
+    }
+  }, [updateJobRes.isSuccess, updateJobRes.isError]);
+
+  useEffect(() => {
     if (isGetSuccess) {
       setProjects(data.body);
     }
@@ -196,113 +206,120 @@ export default function EditPositionPopup(props: {
           </Box>
 
           <Box>
-            <TextField
-              fullWidth
-              id="outline-basic"
-              label="Job Name"
-              variant="outlined"
-              value={jobTitle}
-              onChange={(e) => setjobTitle(e.target.value)}
-            />
+            <Stack direction="row" spacing={1}>
+              <TextField
+                size="small"
+                // fullWidth
+                id="outline-basic"
+                label="Job Name"
+                variant="outlined"
+                value={jobTitle}
+                onChange={(e) => setjobTitle(e.target.value)}
+              />
+
+              <TextField
+                size="small"
+                name="work_title"
+                id="outline-basic"
+                label="Work Title"
+                select
+                variant="outlined"
+                onChange={(e: any) => {
+                  setworkTitle(e.target.value);
+                }}
+                // fullWidth
+                type="text"
+                value={work_title}
+              >
+                {isGetSuccess &&
+                  jobPositions?.body.map((option: any) => (
+                    <MenuItem key={option.id} value={option.name}>
+                      {option.name}
+                    </MenuItem>
+                  ))}
+              </TextField>
+            </Stack>
             <br />
+
+            <Stack direction="row" spacing={1}>
+              <TextField
+                size="small"
+                fullWidth
+                id="outline-basic"
+                label="Tpl Name"
+                variant="outlined"
+                value={tplName}
+                onChange={(e) => settplName(e.target.value)}
+              />
+
+              <TextField
+                size="small"
+                fullWidth
+                type="number"
+                id="outline-basic"
+                label="Weekly hours required"
+                variant="outlined"
+                value={weeklyHours}
+                onChange={(e) => setweeklyHours(+e.target.value)}
+              />
+            </Stack>
             <br />
-            <TextField
-              name="work_title"
-              id="outline-basic"
-              label="Work Title"
-              select
-              variant="outlined"
-              onChange={(e: any) => {
-                setworkTitle(e.target.value);
-              }}
-              fullWidth
-              type="text"
-              value={work_title}
-            >
-              {isGetSuccess &&
-                jobPositions?.body.map((option: any) => (
-                  <MenuItem key={option.id} value={option.name}>
-                    {option.name}
-                  </MenuItem>
-                ))}
-            </TextField>
-            <br />
-            <br />
-            <TextField
-              fullWidth
-              id="outline-basic"
-              label="Tpl Name"
-              variant="outlined"
-              value={tplName}
-              onChange={(e) => settplName(e.target.value)}
-            />
-            <br />
-            <br />
-            <TextField
-              fullWidth
-              type="number"
-              id="outline-basic"
-              label="Weekly hours required"
-              variant="outlined"
-              value={weeklyHours}
-              onChange={(e) => setweeklyHours(+e.target.value)}
-            />
-            <br />
-            <br />
-            <DemoContainer
-              components={["DatePicker"]}
-              sx={{ width: "100%", flexDirection: "column" }}
-            >
+            <Stack direction="row" spacing={1}>
               <DatePicker
                 label="Job expected start date"
                 value={value}
                 onChange={(newValue: any) => setValue(newValue)}
               />
-            </DemoContainer>
-            <DemoContainer components={["DatePicker"]}>
+
               <DatePicker
                 sx={{ flexDirection: "column" }}
                 label="Job expected end date"
                 value={endDate}
                 onChange={(newValue: any) => setendDate(newValue)}
               />
-            </DemoContainer>
+            </Stack>
             <br />
-            <TextField
-              name="project_name"
-              id="outline-basic"
-              select
-              label="Select Project Name"
-              variant="outlined"
-              value={currentProject.id}
-              onChange={(e: any) => {
-                currentProject.id = e.target.value;
-                setCurruentProject({ ...currentProject });
-              }}
-              fullWidth
-            >
-              {projects?.map((option: any) => (
-                <MenuItem key={option.id} value={option.id}>
-                  {option.name}
-                </MenuItem>
-              ))}
-            </TextField>
+            <Stack direction="row">
+              <TextField
+                size="small"
+                name="project_name"
+                id="outline-basic"
+                select
+                label="Select Project Name"
+                variant="outlined"
+                value={currentProject.id}
+                onChange={(e: any) => {
+                  currentProject.id = e.target.value;
+                  setCurruentProject({ ...currentProject });
+                }}
+                fullWidth
+              >
+                {projects?.map((option: any) => (
+                  <MenuItem key={option.id} value={option.id}>
+                    {option.name}
+                  </MenuItem>
+                ))}
+              </TextField>
+            </Stack>
             <br />
-            <br />
-            <Stack direction="column" spacing={1}>
-              {position.skill_list.map((skill: any) => (
+
+            {position.skill_list.map((skill: any) => (
+              <span>
                 <Chip
                   label={skill.name}
                   onDelete={() => handleDelete(skill.id)}
                 />
-              ))}
-            </Stack>
+              </span>
+            ))}
+
+            <br />
             <br />
             <FormControl sx={{ width: "100%" }}>
               <InputLabel id="demo-multiple-chip-label">
                 Select skills
               </InputLabel>
               <Select
+                size="small"
                 labelId="demo-multiple-chip-label"
                 id="demo-multiple-chip"
                 multiple
@@ -329,7 +346,7 @@ export default function EditPositionPopup(props: {
                 ))}
               </Select>
             </FormControl>
-            <Box sx={{ mt: 3, pr: 1 }}>
+            <Box sx={{ mt: 3, textAlign: "right" }}>
               <LoadingButton
                 loading={updateJobRes.isLoading}
                 loadingPosition="start"

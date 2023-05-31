@@ -42,7 +42,7 @@ function PositionCard(props: { jobPosition: any }) {
 
   return (
     <>
-      <Card sx={{ width: 270, minHeight: "250px" }}>
+      <Card sx={{ width: 400, minHeight: "150px", marginTop: "10px" }}>
         <CardContent>
           <Box
             sx={{
@@ -72,9 +72,11 @@ function PositionCard(props: { jobPosition: any }) {
           <Typography variant="caption" align="right" gutterBottom>
             skills: {""}
           </Typography>
+
           {item.skill_list.map((skill: any) => (
             <Chip label={skill.name} key={skill.id} size="small" />
           ))}
+
           <br />
           <br />
           <Typography gutterBottom color="text.secondary" variant="body2">
@@ -87,8 +89,8 @@ function PositionCard(props: { jobPosition: any }) {
             sx={{
               display: "flex",
               // alignItems: "right",
-              pr: "100%",
-              pb: 1,
+              pl: "93%",
+              pt: 4,
               cursor: "pointer",
             }}
           >
@@ -124,33 +126,46 @@ function PositionCard(props: { jobPosition: any }) {
           >
             <Stack direction="row" spacing={1}>
               <Work fontSize="small" />
-              <Typography variant="body2" sx={{ cursor: "pointer" }}>
+              <Typography
+                variant="body2"
+                // fontWeight={"bold"}
+                sx={{ cursor: "pointer" }}
+              >
                 {item.job_name}
               </Typography>
             </Stack>
-            <Typography>{item.job_employee_required_position}</Typography>
-            {/* <br /> */}
-            <Typography>Exptected to Start on:</Typography>
-            <Stack direction="row">
-              <Stack direction="row">
-                <AccessTime fontSize="small" color="primary" />
-                <Typography variant="caption">
-                  {getCreatedDate(item.job_expected_start)}
-                </Typography>
-              </Stack>
-            </Stack>
-            <Stack sx={{ cursor: "pointer" }}>
-              <b>Skills:</b>{" "}
-              {item.skill_list.map((skill: any) => (
-                <Chip label={skill.name} key={skill.id} size="small" />
-              ))}
-            </Stack>
-            <Typography variant="caption">
-              End date: {getCreatedDate(item.job_expected_end_date?.String)}
+            <br />
+            <Typography fontWeight={"bold"}>
+              {item.job_employee_required_position}
             </Typography>
+            <br />
+            <Stack direction="row" spacing={0.5}>
+              <AccessTime fontSize="small" color="primary" />
+              <Typography variant="body2">
+                Exptected to Start on{" "}
+                {getCreatedDate(item.job_expected_start_date)}{" "}
+              </Typography>
+            </Stack>
+            <br />
+            <Typography>Skills for this job</Typography>
+            <Box sx={{ display: "flex", justifyContent: "flex-start" }}>
+              {item.skill_list.map((skill: any) => (
+                <>
+                  <Divider />
+                  <Chip label={skill.name} key={skill.id} size="small" />
+                </>
+              ))}
+            </Box>
+            <br />
+
+            <Typography variant="body2">
+              Expected to end on{" "}
+              {getCreatedDate(item.job_expected_end_date?.String)}
+            </Typography>
+            <br />
             <Typography variant="caption">
-              <b>Job status: </b>
-              {item.job_status}
+              <b>Current status</b>{" "}
+              <Chip size="small" label={item.job_status} color="info" />
             </Typography>
           </SwipeableDrawer>
         </React.Fragment>

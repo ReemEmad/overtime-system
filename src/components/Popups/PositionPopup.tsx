@@ -211,7 +211,6 @@ export default function PositionPopup(props: {
               />
               <br />
               <br />
-
               <TextField
                 name="work_title"
                 id="outline-basic"
