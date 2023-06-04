@@ -23,41 +23,48 @@ import { Edit, Delete, Save } from "@mui/icons-material";
 import { skillDto } from "../data/DTO/Skill";
 import SkillPopup from "./Popups/SkillPopup";
 import { getCreatedDate } from "../utils/getDate";
+import { projectDTO } from "../data/DTO/Project";
+import ProjectPopup from "./Popups/ProjectPopup";
 
-function SkillCard(props: { Skill: skillDto; children?: ReactNode }) {
-  const { created_date, name: SkillName, description } = props.Skill;
+function ProjectCard(props: { project: projectDTO; children?: ReactNode }) {
+  const { created_by, name: projectName, description } = props.project;
   const [openEdit, setopenEdit] = useState(false);
   return (
     <>
       <Card sx={{ width: 270 }}>
         <CardContent>
-          <Typography variant="h6" component="div">
-            {SkillName}
-          </Typography>
-          <Typography sx={{ mb: 1.5 }} color="text.secondary">
-            Created on {getCreatedDate(created_date)}
+          <Typography variant="h5" component="div">
+            {projectName}
           </Typography>
           <Typography variant="body2">{description}</Typography>
         </CardContent>
-
-        <Box sx={{ textAlign: "right", cursor: "pointer" }}>
-          <Edit
-            color="primary"
-            onClick={() => {
-              setopenEdit(true);
+        <CardActions>
+          <Box
+            sx={{
+              display: "flex",
+              pl: "90%",
+              pt: 4,
+              cursor: "pointer",
             }}
-          />
-          {props.children}
-        </Box>
+          >
+            <Edit
+              color="primary"
+              onClick={() => {
+                setopenEdit(true);
+              }}
+            />
+            {props.children}
+          </Box>
+        </CardActions>
       </Card>
-      <SkillPopup
+      <ProjectPopup
+        edit={true}
         open={openEdit}
         setOpen={setopenEdit}
-        edit={true}
-        skill={props.Skill}
+        project={props.project}
       />
     </>
   );
 }
 
-export default SkillCard;
+export default ProjectCard;

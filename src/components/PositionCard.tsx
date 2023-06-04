@@ -126,11 +126,7 @@ function PositionCard(props: { jobPosition: any }) {
           >
             <Stack direction="row" spacing={1}>
               <Work fontSize="small" />
-              <Typography
-                variant="body2"
-                // fontWeight={"bold"}
-                sx={{ cursor: "pointer" }}
-              >
+              <Typography variant="body2" sx={{ cursor: "pointer" }}>
                 {item.job_name}
               </Typography>
             </Stack>
@@ -157,7 +153,6 @@ function PositionCard(props: { jobPosition: any }) {
               ))}
             </Box>
             <br />
-
             <Typography variant="body2">
               Expected to end on{" "}
               {getCreatedDate(item.job_expected_end_date?.String)}

@@ -18,14 +18,14 @@ import FormControl from "@mui/material/FormControl";
 import FormLabel from "@mui/material/FormLabel";
 import { TextField } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
-import { Save } from "@mui/icons-material";
+import { Add, Save } from "@mui/icons-material";
 import Snackbar from "@mui/material/Snackbar";
 import MuiAlert, { AlertProps } from "@mui/material/Alert";
-import { skillDto } from "../../data/DTO/Skill";
 import {
-  usePostSkillMutation,
-  useUpdateSkillMutation,
-} from "../../services/skill.service";
+  usePostProjectsMutation,
+  useEditProjectsMutation,
+} from "../../services/positions.service";
+import { projectDTO } from "../../data/DTO/Project";
 
 const style = {
   position: "absolute" as "absolute",
@@ -42,43 +42,48 @@ const style = {
 export default function SkillPopup(props: {
   open: boolean;
   setOpen: Dispatch<SetStateAction<boolean>>;
-  add?: boolean;
   edit?: boolean;
-  skill?: skillDto;
+  add?: boolean;
+  project?: projectDTO;
 }) {
-  const { open, setOpen, add = false, edit = false, skill } = props;
+  const { open, setOpen, add = false, edit = false, project } = props;
 
-  const [skillTitle, setskillTitle] = useState(add ? "" : skill?.name);
+  const [skillTitle, setskillTitle] = useState(add ? "" : project?.name);
   const [skillDescription, setskillDescription] = useState(
-    add ? "" : skill?.description
+    add ? "" : project?.description
   );
 
   const [openSuccess, setopenSuccess] = useState(false);
 
-  const [postskill, { isLoading, isSuccess }] = usePostSkillMutation();
-  const [updateskill, updateskillRes] = useUpdateSkillMutation();
+  const [postProject, postProjectRes] = usePostProjectsMutation();
+  const [updateProject, updateProjectRes] = useEditProjectsMutation();
 
   const handleClose = () => setOpen(false);
 
   const setModalTitle = () => {
-    if (add) return "Add a new skill";
-    return "Edit skill data";
+    if (add) return "Add a new project";
+    return "Edit project data";
   };
 
-  const postNewskill = () => {
-    postskill({
+  const postNewProject = () => {
+    postProject({
       name: skillTitle,
       description: skillDescription,
     });
   };
 
-  const editskill = () => {
-    updateskill({
-      id: skill?.id,
-      body: {
-        name: skillTitle ?? "",
-        description: skillDescription ?? "",
-      },
+  // console.log("editing");
+  // console.log(skillTitle, skillDescription, project?.id);
+  // console.log(
+  //   "🚀 ~ file: ProjectPopup.tsx:84 ~ editProject ~ body:",
+  //   skillTitle,
+  //   skillDescription
+  // );
+  const editProject = () => {
+    updateProject({
+      id: project?.id,
+      name: skillTitle,
+      description: skillDescription,
     });
   };
 
@@ -100,18 +105,18 @@ export default function SkillPopup(props: {
   };
 
   useEffect(() => {
-    if (isSuccess) {
+    if (postProjectRes.isSuccess) {
       setopenSuccess(true);
       handleClose();
     }
-  }, [isSuccess]);
+  }, [postProjectRes.isSuccess]);
 
   useEffect(() => {
-    if (updateskillRes.isSuccess) {
+    if (updateProjectRes.isSuccess) {
       setopenSuccess(true);
       handleClose();
     }
-  }, [updateskillRes.isSuccess]);
+  }, [updateProjectRes.isSuccess]);
 
   return (
     <div>
@@ -125,7 +130,7 @@ export default function SkillPopup(props: {
           severity="success"
           sx={{ width: "100%" }}
         >
-          {add ? "skill added successfully" : "skill edited successfully"}
+          {add ? "project added successfully" : "project edited successfully"}
         </Alert>
       </Snackbar>
       <Modal
@@ -145,44 +150,48 @@ export default function SkillPopup(props: {
             <Box>
               <TextField
                 fullWidth
-                id="outlined-basic"
+                id="filled-basic"
                 label="Name"
                 variant="outlined"
                 value={skillTitle}
-                onChange={(e) => setskillTitle(e.target.value)}
+                onChange={(e) => {
+                  setskillTitle(e.target.value);
+                  console.log(e.target.value);
+                }}
               />
               <br />
               <br />
               <TextField
                 fullWidth
-                id="outlined-basic"
+                id="filled-basic"
                 label="Description"
                 variant="outlined"
                 value={skillDescription}
                 onChange={(e) => setskillDescription(e.target.value)}
               />
             </Box>
+            <br />
             {add && (
-              <Box sx={{ mt: 3, pr: 1 }}>
+              <Box sx={{ mt: 3, textAlign: "right" }}>
                 <LoadingButton
-                  loading={isLoading}
+                  loading={postProjectRes.isLoading}
                   loadingPosition="start"
-                  startIcon={isLoading ? <Save /> : null}
+                  startIcon={postProjectRes.isLoading ? <Add /> : null}
                   variant="contained"
-                  onClick={postNewskill}
+                  onClick={postNewProject}
                 >
                   Ok
                 </LoadingButton>
               </Box>
             )}
             {edit && (
-              <Box sx={{ mt: 3, pr: 1, textAlign: "right" }}>
+              <Box sx={{ mt: 3, textAlign: "right" }}>
                 <LoadingButton
-                  loading={updateskillRes.isLoading}
+                  loading={updateProjectRes.isLoading}
                   loadingPosition="start"
-                  startIcon={updateskillRes.isLoading ? <Save /> : null}
+                  startIcon={updateProjectRes.isLoading ? <Save /> : null}
                   variant="contained"
-                  onClick={editskill}
+                  onClick={editProject}
                 >
                   Ok
                 </LoadingButton>

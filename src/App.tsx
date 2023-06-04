@@ -23,6 +23,7 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { StyledEngineProvider } from "@mui/material/styles";
 import { ThemeProvider } from "@mui/material";
 import theme from "./theme";
+import AdminPositions from "./pages/AdminPositions";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -39,9 +40,8 @@ const router = createBrowserRouter(
         <Route path="signout" element={<Signout />} />
       </Route>
       <Route path="/squadlead" errorElement={<Error />} element={<SideMenu />}>
-        {/* <Route path="register" element={<Register />} /> */}
         <Route path="landing" element={<SquadLeadLanding />} />
-        {/* <Route path="signout" element={<Signout />} /> */}
+        <Route path="positions" element={<AdminPositions />} />
       </Route>
       <Route path="*" element={<p>404 Not found...</p>} />
     </>

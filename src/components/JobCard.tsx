@@ -24,32 +24,30 @@ import { JobDTO } from "../data/DTO/Job";
 import JobPopup from "./Popups/JobPopup";
 import { getCreatedDate } from "../utils/getDate";
 
-function JobCard(props: { job: JobDTO; children: ReactNode }) {
+function JobCard(props: { job: JobDTO; children?: ReactNode }) {
   const { created_date, name: jobName, description } = props.job;
   const [openEdit, setopenEdit] = useState(false);
   return (
     <>
-      <Card sx={{ width: 270 }}>
+      <Card sx={{ width: 270, minHeight: "120px" }}>
         <CardContent>
-          <Typography variant="h5" component="div">
+          <Typography variant="h6" component="div">
             {jobName}
           </Typography>
           <Typography sx={{ mb: 1.5 }} color="text.secondary">
-            created on: {getCreatedDate(created_date)}
+            created on {getCreatedDate(created_date)}
           </Typography>
           <Typography variant="body2">{description}</Typography>
         </CardContent>
-        <CardActions>
-          <Box sx={{ display: "flex", alignItems: "left", pl: 1, pb: 1 }}>
-            <Edit
-              color="info"
-              onClick={() => {
-                setopenEdit(true);
-              }}
-            />
-            {props.children}
-          </Box>
-        </CardActions>
+
+        <Box sx={{ p: "3", textAlign: "right", cursor: "pointer" }}>
+          <Edit
+            color="info"
+            onClick={() => {
+              setopenEdit(true);
+            }}
+          />
+        </Box>
       </Card>
       <JobPopup
         open={openEdit}

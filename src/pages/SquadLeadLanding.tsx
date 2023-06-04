@@ -85,16 +85,7 @@ function SquadLeadLanding() {
 
   return (
     <>
-      <Box
-      // sx={{
-      //   // marginLeft: "50%",
-      //   display: "flex",
-      //   flexGrow: 1,
-      //   flexDirection: "column",
-      //   justifyContent: "flex-end",
-      //   alignItems: "center",
-      // }}
-      >
+      <Box>
         <Button
           variant="contained"
           startIcon={<AddCircle />}
@@ -104,12 +95,8 @@ function SquadLeadLanding() {
           Add a new job position
         </Button>
         <br />
-        {/* <Typography variant="h" component="div">
-          Squad landing
-        </Typography> */}
-        {/* <Box> */}
       </Box>
-      {/* <Box> */}
+
       <Box
         sx={{
           // marginLeft: "50%",
@@ -122,15 +109,9 @@ function SquadLeadLanding() {
           flexWrap: "wrap",
         }}
       >
-        {/* <Grid container spacing={3}>
-          <Grid item xs={12} sm={6} md={4}> */}
         {isSuccess &&
           data.body.map((item: any) => <PositionCard jobPosition={item} />)}
-        {/* </Grid>
-        </Grid> */}
       </Box>
-      {/* </Box> */}
-      {/* </Box> */}
 
       <PositionPopup add={true} open={open} setOpen={setopen} />
       <p style={{ margin: "auto" }}> {isLoading && <CircularProgress />}</p>

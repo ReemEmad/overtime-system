@@ -87,26 +87,12 @@ export default function Jobs() {
     }
   }, [data]);
 
-  // const removeJob = () => {
-  //   deleteUser(id as string);
-  //   if (deleteUserRes.isSuccess) {
-  //     setopenSuccess(true);
-  //     handleCloseDelete();
-  //   }
-  // };
-
-  const patchJob = () => {
-    console.log("patched");
-  };
 
   return (
     <>
       <Box
         sx={{
-          display: "flex",
-          placeItems: "center",
-          justifyContent: "flex-end",
-          gap: "10px",
+          marginBottom: "15px",
         }}
       >
         <Button
@@ -118,51 +104,16 @@ export default function Jobs() {
           Add a job
         </Button>
       </Box>
-      <Box
-        sx={{
-          marginLeft: "300px",
-          width: "60%",
-        }}
-      >
-        <Grid container spacing={3}>
+      <Box>
+        <Grid container spacing={1}>
           {isLoading && <CircularProgress color="inherit" />}
           {jobs.map((job: JobDTO) => (
-            <Grid item xs={4} key={job.id}>
-              <JobCard job={job}>
-                {/* <Delete
-                  color="error"
-                  onClick={() => {
-                    setJobId(job.id);
-                    setopenDelete(true);
-                  }}
-                /> */}
-              </JobCard>
+            <Grid item xs={3} key={job.id}>
+              <JobCard job={job} />
             </Grid>
           ))}
         </Grid>
       </Box>
-
-      <JobPopup add={true} open={openAddJob} setOpen={setopenAddJob} />
-
-      <DeletePopup
-        handleOpenDelete={setopenDelete}
-        openDelete={openDelete}
-        DeleteModalTitle="Are You sure you want to delete this Job?"
-      >
-        <LoadingButton
-          loading={deleteJobRes.isLoading}
-          loadingPosition="start"
-          startIcon={deleteJobRes.isLoading ? <Save /> : null}
-          variant="contained"
-          onClick={() => {
-            deleteJob(jobId);
-            setopenDelete(false);
-          }}
-          size="small"
-        >
-          Confirm
-        </LoadingButton>
-      </DeletePopup>
     </>
   );
 }

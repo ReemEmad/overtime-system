@@ -87,10 +87,12 @@ export default function SideMenu() {
           )}
           {role === UserRoles.SquadLead && (
             <List>
-              {["quick links: TBD"].map((text) => (
+              {["Projects"].map((text) => (
                 <ListItem key={text} disablePadding>
                   <ListItemButton
-                  // onClick={() => navigate(appRoutes.ADMIN_LANDING_JOBS)}
+                    onClick={() =>
+                      navigate(appRoutes.SQUADLEAD_LANDING_POSITIONS)
+                    }
                   >
                     <ListItemIcon>
                       <AddBoxIcon />

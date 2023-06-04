@@ -10,7 +10,35 @@ const positionsExtendedApi = mainProvider.injectEndpoints({
           url: "/projects",
         };
       },
-      // providesTags: ["positions"],
+      providesTags: ["projects"],
+    }),
+    postProjects: builder.mutation<any, any>({
+      query: (args) => {
+        const { name, description } = args;
+        return {
+          url: "/projects",
+          method: "POST",
+          body: {
+            name,
+            description,
+          },
+        };
+      },
+      invalidatesTags: ["projects"],
+    }),
+    editProjects: builder.mutation<any, any>({
+      query: (args) => {
+        const { id, name, description } = args;
+        return {
+          url: `/project/${id}`,
+          method: "PUT",
+          body: {
+            name,
+            description,
+          },
+        };
+      },
+      invalidatesTags: ["projects"],
     }),
     getPositions: builder.query({
       query: () => {
@@ -93,8 +121,10 @@ const positionsExtendedApi = mainProvider.injectEndpoints({
 });
 
 export const {
-  useGetPositionsQuery,
   useGetProjectsQuery,
+  usePostProjectsMutation,
+  useEditProjectsMutation,
+  useGetPositionsQuery,
   usePostPositionsMutation,
   useUpdatePositionMutation,
   useDeletePositionMutation,

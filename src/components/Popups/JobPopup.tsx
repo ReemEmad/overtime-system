@@ -149,25 +149,26 @@ export default function JobPopup(props: {
             <Box>
               <TextField
                 fullWidth
-                id="filled-basic"
+                id="outlined-basic"
                 label="Name"
-                variant="filled"
+                variant="outlined"
                 value={jobTitle}
                 onChange={(e) => setjobTitle(e.target.value)}
               />
-
+              <br />
+              <br />
               <TextField
                 fullWidth
-                id="filled-basic"
+                id="outlined-basic"
                 label="Description"
-                variant="filled"
+                variant="outlined"
                 value={jobDescription}
                 onChange={(e) => setjobDescription(e.target.value)}
               />
             </Box>
             <br />
             {add && (
-              <Box sx={{ mt: 3, pr: 1 }}>
+              <Box sx={{ mt: 3, textAlign: "right" }}>
                 <LoadingButton
                   loading={isLoading}
                   loadingPosition="start"
@@ -180,7 +181,7 @@ export default function JobPopup(props: {
               </Box>
             )}
             {edit && (
-              <Box sx={{ mt: 3, pr: 1 }}>
+              <Box sx={{ mt: 3, textAlign: "right" }}>
                 <LoadingButton
                   loading={updateJobRes.isLoading}
                   loadingPosition="start"

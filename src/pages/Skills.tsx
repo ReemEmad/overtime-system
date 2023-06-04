@@ -87,26 +87,11 @@ export default function Skills() {
     }
   }, [data]);
 
-  // const removeskill = () => {
-  //   deleteUser(id as string);
-  //   if (deleteUserRes.isSuccess) {
-  //     setopenSuccess(true);
-  //     handleCloseDelete();
-  //   }
-  // };
-
-  const patchskill = () => {
-    console.log("patched");
-  };
-
   return (
     <>
       <Box
         sx={{
-          display: "flex",
-          placeItems: "center",
-          justifyContent: "flex-end",
-          gap: "10px",
+          marginBottom: "15px",
         }}
       >
         <Button
@@ -118,51 +103,18 @@ export default function Skills() {
           Add a skill
         </Button>
       </Box>
-      <Box
-        sx={{
-          marginLeft: "300px",
-          width: "60%",
-        }}
-      >
-        <Grid container spacing={3}>
+      <Box>
+        <Grid container spacing={1}>
           {isLoading && <CircularProgress color="inherit" />}
           {skills.map((skill: skillDto) => (
-            <Grid item xs={4} key={skill.id}>
-              <SkillCard Skill={skill}>
-                {/* <Delete
-                  color="error"
-                  onClick={() => {
-                    setskillId(skill.id);
-                    setopenDelete(true);
-                  }}
-                /> */}
-              </SkillCard>
+            <Grid item xs={3} key={skill.id}>
+              <SkillCard Skill={skill}></SkillCard>
             </Grid>
           ))}
         </Grid>
       </Box>
 
       <SkillPopup add={true} open={openAddskill} setOpen={setopenAddskill} />
-
-      <DeletePopup
-        handleOpenDelete={setopenDelete}
-        openDelete={openDelete}
-        DeleteModalTitle="Are You sure you want to delete this skill?"
-      >
-        <LoadingButton
-          loading={deleteskillRes.isLoading}
-          loadingPosition="start"
-          startIcon={deleteskillRes.isLoading ? <Save /> : null}
-          variant="contained"
-          onClick={() => {
-            deleteskill(skillId);
-            setopenDelete(false);
-          }}
-          size="small"
-        >
-          Confirm
-        </LoadingButton>
-      </DeletePopup>
     </>
   );
 }
