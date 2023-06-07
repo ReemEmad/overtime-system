@@ -1,4 +1,5 @@
 export interface userDataDto {
+  body: any;
   name: string;
   work_title: string;
   id?: string;

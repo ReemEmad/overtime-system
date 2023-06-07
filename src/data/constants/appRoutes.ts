@@ -5,6 +5,7 @@ export enum appRoutes {
   ADMIN_LANDING_SKILLS = "/app-admin/skills",
   CANDIDATE_REGISTER = "/candidate/register",
   CANDIDATE_LANDING = "/candidate/landing",
+  CANDIDATE_SKILLS = "/candidate/skills",
   SIGNOUT = "/candidate/signout",
   SQUADLEAD_LANDING = "/squadLead/landing",
   SQUADLEAD_LANDING_POSITIONS = "/squadLead/positions",

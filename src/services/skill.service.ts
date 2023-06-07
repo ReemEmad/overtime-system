@@ -49,6 +49,17 @@ const skillExtendedApi = mainProvider.injectEndpoints({
       }),
       invalidatesTags: ["skills"],
     }),
+    postCandidateSkill: builder.mutation<any, any>({
+      query: (args) => {
+        return {
+          url: "/user-skills",
+          method: "POST",
+          body: {
+            skills: args,
+          },
+        };
+      },
+    }),
   }),
 });
 
@@ -57,4 +68,5 @@ export const {
   usePostSkillMutation,
   useUpdateSkillMutation,
   useDeleteSkillMutation,
+  usePostCandidateSkillMutation,
 } = skillExtendedApi;
