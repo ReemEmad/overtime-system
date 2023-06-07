@@ -8,32 +8,20 @@ import {
 } from "react";
 import {
   Box,
-  Modal,
-  Fade,
-  Button,
   Typography,
-  Radio,
-  RadioGroup,
-  FormControl,
-  FormControlLabel,
-  FormLabel,
   Divider,
   TextField,
-  Grid,
   MenuItem,
   Snackbar,
   Alert,
 } from "@mui/material";
-import MuiAlert, { AlertProps } from "@mui/material/Alert";
-import { Formik, FormikHelpers } from "formik";
+
+import { Formik } from "formik";
 import { LoadingButton } from "@mui/lab";
-import SideMenu from "../components/Menus/SideMenu";
-import { workLocations } from "../data/constants";
 import { useNavigate } from "react-router-dom";
 import { useGetJobsQuery } from "../services/job.service";
 import {
   useGetSquadLeadsQuery,
-  usePostUserMutation,
   useRegisterCandidateMutation,
 } from "../services/user.service";
 import { Save } from "@mui/icons-material";
@@ -80,18 +68,17 @@ export default function Register() {
     setopenError(false);
   };
 
-
-
   const checkUserRoleAndRedirect = (userRole: UserRoles) => {
+    console.log("hello");
     switch (userRole) {
       case UserRoles.Operation:
-        navigate(appRoutes.CANDIDATE_LANDING);
+        navigate(appRoutes.CANDIDATE_SKILLS);
         break;
       case UserRoles.CFO:
         navigate(appRoutes.ADMIN_LANDING);
         break;
       case UserRoles.SquadLead:
-        navigate(appRoutes.ADMIN_LANDING);
+        navigate(appRoutes.SQUADLEAD_LANDING);
         break;
       case UserRoles.Admin:
         navigate(appRoutes.ADMIN_LANDING);
@@ -110,17 +97,18 @@ export default function Register() {
 
   useEffect(() => {
     if (registerUserRes.isSuccess) {
-      const response: any = registerUserRes.data;
-
+      console.log(
+        "🚀 ~ file: Register.tsx:100 ~ useEffect ~ registerUserRes:",
+        registerUserRes
+      );
+      const response: any = registerUserRes.data.body;
       localStorage.setItem("userData", JSON.stringify(response));
       checkUserRoleAndRedirect(response.role);
-      navigate(appRoutes.CANDIDATE_LANDING);
     }
   }, [registerUserRes.isSuccess]);
 
   useEffect(() => {
     if (registerUserRes.isError) {
-      console.log(registerUserRes.isError);
       setopenError(true);
     }
   }, [registerUserRes.isError]);
