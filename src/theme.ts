@@ -12,9 +12,11 @@ const theme: ThemeOptions = createTheme({
       main: "rgba(218,218,218,0.46)",
       dark: "#b9b9b9",
     },
+    info: {
+      main: "#1abaed",
+    },
     background: {
-      // default: "#f8f8f8",
-      default: "#ea0606",
+      default: "#f8f8f8",
     },
   },
   typography: {

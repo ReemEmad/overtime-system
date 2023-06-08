@@ -18,7 +18,12 @@ import { Edit, AccessTime, Work } from "@mui/icons-material";
 import { getCreatedDate } from "../utils/utility";
 import EditPositionPopup from "./Popups/EditPositionPopup";
 
-function PositionCard(props: { jobPosition: any }) {
+function PositionCard(props: {
+  jobPosition: any;
+  editable?: boolean;
+  candidateJob?: boolean;
+  score?: number;
+}) {
   const { jobPosition: item } = props;
   const [openEdit, setopenEdit] = useState(false);
   const [openSideDrawer, setOpenSideDrawer] = useState(false);
@@ -84,23 +89,38 @@ function PositionCard(props: { jobPosition: any }) {
           </Typography>
         </CardContent>
         <Divider />
-        <CardActions>
-          <Box
-            sx={{
-              display: "flex",
-              // alignItems: "right",
-              pl: "93%",
-              pt: 4,
-              cursor: "pointer",
-            }}
-          >
+        <CardActions
+          sx={{
+            display: "flex",
+            justifyContent: "space-between",
+            placeItems: "center",
+          }}
+        >
+          {/* {props.score && ( */}
+          <Typography color="text.primary" variant="body2">
+            <strong>{props.score}% match!</strong>
+          </Typography>
+          {/* )} */}
+          {props.candidateJob && (
+            <>
+              <Button variant="outlined" color="primary" size="small">
+                Apply
+              </Button>
+            </>
+          )}
+          {props.editable && (
             <Edit
+              sx={{
+                pl: "93%",
+                pt: 4,
+                cursor: "pointer",
+              }}
               color="primary"
               onClick={() => {
                 setopenEdit(true);
               }}
             />
-          </Box>
+          )}
         </CardActions>
       </Card>
       <EditPositionPopup

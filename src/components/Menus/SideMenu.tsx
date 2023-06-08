@@ -20,6 +20,7 @@ import { Link, Outlet, useNavigate } from "react-router-dom";
 import { getUserRole } from "../../utils/utility";
 import { appRoutes } from "../../data/constants/appRoutes";
 import { UserRoles } from "../../data/DTO/Roles";
+import { AccountCircleOutlined, ExitToApp } from "@mui/icons-material";
 
 const drawerWidth = 240;
 
@@ -78,13 +79,40 @@ export default function SideMenu() {
               {["Signout"].map((text) => (
                 <ListItem key={text} disablePadding>
                   <ListItemButton onClick={() => navigate(appRoutes.SIGNOUT)}>
-                    <ListItemIcon>{/* <AddBoxIcon /> */}</ListItemIcon>
+                    <ListItemIcon>
+                      <ExitToApp />
+                    </ListItemIcon>
                     <ListItemText primary={text} />
                   </ListItemButton>
                 </ListItem>
               ))}
             </List>
           )}
+          {role === UserRoles.Operation && (
+            <List>
+              {["Profile"].map((text) => (
+                <ListItem key={text} disablePadding>
+                  <ListItemButton>
+                    <ListItemIcon>
+                      <AccountCircleOutlined color="info" />
+                    </ListItemIcon>
+                    <ListItemText primary={text} />
+                  </ListItemButton>
+                </ListItem>
+              ))}
+              {["Signout"].map((text) => (
+                <ListItem key={text} disablePadding>
+                  <ListItemButton onClick={() => navigate(appRoutes.SIGNOUT)}>
+                    <ListItemIcon>
+                      <ExitToApp />
+                    </ListItemIcon>
+                    <ListItemText primary={text} />
+                  </ListItemButton>
+                </ListItem>
+              ))}
+            </List>
+          )}
+
           {role === UserRoles.SquadLead && (
             <List>
               {["Projects"].map((text) => (

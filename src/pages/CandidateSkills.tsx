@@ -22,17 +22,9 @@ import { appRoutes } from "../data/constants/appRoutes";
 import { LoadingButton } from "@mui/lab";
 import { Save } from "@mui/icons-material";
 
-interface skill {
-  id: number;
-  name: string;
-  created_date: string;
-  description: string;
-  experiences: "";
-}
-
 const CandidateSkills = () => {
   const navigate = useNavigate();
-  const [skills, setskills] = useState<skill[]>([]);
+  const [skills, setskills] = useState<skillDto[]>([]);
   const { data: skillsList, isSuccess: isGetSkills } = useGetSkillsQuery({
     page_number: 0,
     page_size: 0,
@@ -76,10 +68,6 @@ const CandidateSkills = () => {
     postSkills(userSkills);
 
     if (postSkillsRes.isSuccess) {
-      console.log(
-        "🚀 ~ file: CandidateSkills.tsx:77 ~ handleConfirmSkills ~ postSkillsRes.isSuccess:",
-        postSkillsRes.isSuccess
-      );
       handleCloseDialog();
       navigate(appRoutes.CANDIDATE_LANDING);
     }
@@ -159,16 +147,6 @@ const CandidateSkills = () => {
                     </Select>
                   </FormControl>
                 </Box>
-                {/* {experiences.map((experience) => (
-                  <Chip
-                    key={experience}
-                    label={experience}
-                    clickable
-                    color="primary"
-                    onClick={() => handleExperiences(experience, skillId)}
-                    style={{ margin: 4 }}
-                  />
-                ))} */}
               </div>
             );
           })}
