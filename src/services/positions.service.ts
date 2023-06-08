@@ -77,18 +77,6 @@ const positionsExtendedApi = mainProvider.injectEndpoints({
       },
       invalidatesTags: ["positions"],
     }),
-    // updateSkillPosition: builder.mutation<any, any>({
-    //   query: (args) => {
-    //     const { jobId } = args;
-    //     return {
-    //       url: `/job-skills/${jobId}`,
-    //       method: "Post",
-    //       body: {
-    //         skill_list: [],
-    //       },
-    //     };
-    //   },
-    // }),
     updatePosition: builder.mutation<
       JobToEdit,
       { id: string | undefined; body: JobToEdit }

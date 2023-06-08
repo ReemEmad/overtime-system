@@ -114,6 +114,14 @@ const userExtendedApi = mainProvider.injectEndpoints({
       },
       providesTags: ["squadLeads"],
     }),
+    getCandidateJobs: builder.query({
+      query: () => {
+        return {
+          url: "/user/jobs",
+        };
+      },
+      providesTags: ["candidatejobs"],
+    }),
   }),
 });
 
@@ -124,4 +132,5 @@ export const {
   useDeleteUserMutation,
   useRegisterCandidateMutation,
   useGetSquadLeadsQuery,
+  useGetCandidateJobsQuery,
 } = userExtendedApi;

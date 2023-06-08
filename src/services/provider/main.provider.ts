@@ -25,6 +25,7 @@ export const mainProvider = createApi({
     "constants",
     "positions",
     "projects",
+    "candidatejobs",
   ],
   endpoints: () => ({}),
 });

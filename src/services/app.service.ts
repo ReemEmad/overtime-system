@@ -1,6 +1,6 @@
 import { mainProvider } from "./provider/main.provider";
 
-const skillExtendedApi = mainProvider.injectEndpoints({
+const mainApi = mainProvider.injectEndpoints({
   endpoints: (builder) => ({
     getAppConstants: builder.query({
       query: () => {
@@ -13,4 +13,4 @@ const skillExtendedApi = mainProvider.injectEndpoints({
   }),
 });
 
-export const { useGetAppConstantsQuery } = skillExtendedApi;
+export const { useGetAppConstantsQuery } = mainApi;
