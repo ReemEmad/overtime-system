@@ -92,7 +92,7 @@ export default function SideMenu() {
             <List>
               {["Profile"].map((text) => (
                 <ListItem key={text} disablePadding>
-                  <ListItemButton>
+                    <ListItemButton onClick={() => navigate(appRoutes.CANDIDATE_PROFILE)}>
                     <ListItemIcon>
                       <AccountCircleOutlined color="info" />
                     </ListItemIcon>

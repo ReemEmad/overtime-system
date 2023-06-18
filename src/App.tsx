@@ -25,6 +25,7 @@ import { ThemeProvider } from "@mui/material";
 import theme from "./theme";
 import AdminPositions from "./pages/AdminPositions";
 import CandidateSkills from "./pages/CandidateSkills";
+import Profile from "./pages/Profile";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -40,6 +41,7 @@ const router = createBrowserRouter(
         <Route path="skills" element={<CandidateSkills />} />
         <Route path="landing" element={<CandidateLanding />} />
         <Route path="signout" element={<Signout />} />
+        <Route path="profile" element={<Profile />} />
       </Route>
       <Route path="/squadlead" errorElement={<Error />} element={<SideMenu />}>
         <Route path="landing" element={<SquadLeadLanding />} />
