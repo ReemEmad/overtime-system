@@ -62,16 +62,17 @@ function PositionCard(props: {
               sx={{ fontWeight: "bold", cursor: "pointer" }}
               onClick={() => setOpenSideDrawer(true)}
             >
-              {item.job_name}
+              {item.job_employee_required_position}
             </Typography>
+            <br />
             {/* </Button> */}
-            <Chip size="small" label={item.job_status} color="info" />
+            {!props.candidateJob && (
+              <Chip size="small" label={item.job_status} color="info" />
+            )}
           </Box>
-
           <Typography variant="caption" align="right">
             Project <strong>{item.project_name}</strong>
           </Typography>
-
           <br />
           <br />
           <Typography variant="caption" align="right" gutterBottom>
@@ -81,7 +82,6 @@ function PositionCard(props: {
           {item.skill_list.map((skill: any) => (
             <Chip label={skill.name} key={skill.id} size="small" />
           ))}
-
           <br />
           <br />
           <Typography gutterBottom color="text.secondary" variant="body2">
@@ -96,11 +96,11 @@ function PositionCard(props: {
             placeItems: "center",
           }}
         >
-          {/* {props.score && ( */}
-          <Typography color="text.primary" variant="body2">
-            <strong>{props.score}% match!</strong>
-          </Typography>
-          {/* )} */}
+          {props.score !== undefined && (
+            <Typography color="text.primary" variant="body2">
+              <strong>{props.score}% match!</strong>
+            </Typography>
+          )}
           {props.candidateJob && (
             <>
               <Button variant="outlined" color="primary" size="small">
@@ -151,6 +151,7 @@ function PositionCard(props: {
               </Typography>
             </Stack>
             <br />
+
             <Typography fontWeight={"bold"}>
               {item.job_employee_required_position}
             </Typography>
