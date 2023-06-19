@@ -17,6 +17,8 @@ import {
 import { Edit, AccessTime, Work } from "@mui/icons-material";
 import { getCreatedDate } from "../utils/utility";
 import EditPositionPopup from "./Popups/EditPositionPopup";
+import { useNavigate } from "react-router-dom";
+import { appRoutes } from "../data/constants/appRoutes";
 
 function PositionCard(props: {
   jobPosition: any;
@@ -24,6 +26,7 @@ function PositionCard(props: {
   candidateJob?: boolean;
   score?: number;
 }) {
+  const navigate = useNavigate();
   const { jobPosition: item } = props;
   const [openEdit, setopenEdit] = useState(false);
   const [openSideDrawer, setOpenSideDrawer] = useState(false);
@@ -45,6 +48,14 @@ function PositionCard(props: {
       setOpenSideDrawer((prev) => !prev);
     };
 
+  const handleOnClick = () => {
+    item.job_status === "approved"
+      ? navigate(
+          appRoutes.SQUADLEAD_LANDING_APPROVED_POSITIONS + `/${item.job_id}`
+        )
+      : () => setOpenSideDrawer(true);
+  };
+
   return (
     <>
       <Card sx={{ width: 400, minHeight: "150px", marginTop: "10px" }}>
@@ -56,17 +67,15 @@ function PositionCard(props: {
               alignItems: "center",
             }}
           >
-            {/* <Button variant="text" onClick={() => setOpenSideDrawer(true)}> */}
             <Typography
               variant="h6"
               sx={{ fontWeight: "bold", cursor: "pointer" }}
-              onClick={() => setOpenSideDrawer(true)}
+              onClick={handleOnClick}
             >
               {item.job_employee_required_position}
             </Typography>
             <br />
-            {/* </Button> */}
-            {!props.candidateJob && (
+            {!props.candidateJob && item.job_status !== "approved" && (
               <Chip size="small" label={item.job_status} color="info" />
             )}
           </Box>

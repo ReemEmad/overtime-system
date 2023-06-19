@@ -26,6 +26,8 @@ import theme from "./theme";
 import AdminPositions from "./pages/AdminPositions";
 import CandidateSkills from "./pages/CandidateSkills";
 import Profile from "./pages/Profile";
+import ApprovedPositions from "./pages/ApprovedPositions";
+import ApprovedJob from "./components/ApprovedJob";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -46,6 +48,8 @@ const router = createBrowserRouter(
       <Route path="/squadlead" errorElement={<Error />} element={<SideMenu />}>
         <Route path="landing" element={<SquadLeadLanding />} />
         <Route path="positions" element={<AdminPositions />} />
+        <Route path="approved-positions" element={<ApprovedPositions />} />
+        <Route path="approved-positions/:id" element={<ApprovedJob />} />
       </Route>
       <Route path="*" element={<p>404 Not found...</p>} />
     </>

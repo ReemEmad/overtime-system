@@ -92,7 +92,9 @@ export default function SideMenu() {
             <List>
               {["Profile"].map((text) => (
                 <ListItem key={text} disablePadding>
-                    <ListItemButton onClick={() => navigate(appRoutes.CANDIDATE_PROFILE)}>
+                  <ListItemButton
+                    onClick={() => navigate(appRoutes.CANDIDATE_PROFILE)}
+                  >
                     <ListItemIcon>
                       <AccountCircleOutlined color="info" />
                     </ListItemIcon>
@@ -120,6 +122,20 @@ export default function SideMenu() {
                   <ListItemButton
                     onClick={() =>
                       navigate(appRoutes.SQUADLEAD_LANDING_POSITIONS)
+                    }
+                  >
+                    <ListItemIcon>
+                      <AddBoxIcon />
+                    </ListItemIcon>
+                    <ListItemText primary={text} />
+                  </ListItemButton>
+                </ListItem>
+              ))}
+              {["Approved Jobs"].map((text) => (
+                <ListItem key={text} disablePadding>
+                  <ListItemButton
+                    onClick={() =>
+                      navigate(appRoutes.SQUADLEAD_LANDING_APPROVED_POSITIONS)
                     }
                   >
                     <ListItemIcon>

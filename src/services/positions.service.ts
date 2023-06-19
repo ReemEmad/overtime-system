@@ -48,6 +48,14 @@ const positionsExtendedApi = mainProvider.injectEndpoints({
       },
       providesTags: ["positions"],
     }),
+    getApprovedPositions: builder.query({
+      query: () => {
+        return {
+          url: "/approved-jobs",
+        };
+      },
+      // providesTags: ["positions"],
+    }),
     postPositions: builder.mutation<JobToPost, JobToPost>({
       query: (args) => {
         const {
@@ -113,6 +121,7 @@ export const {
   usePostProjectsMutation,
   useEditProjectsMutation,
   useGetPositionsQuery,
+  useGetApprovedPositionsQuery,
   usePostPositionsMutation,
   useUpdatePositionMutation,
   useDeletePositionMutation,
