@@ -29,7 +29,7 @@ function SkillCard(props: { Skill: skillDto; children?: ReactNode }) {
   const [openEdit, setopenEdit] = useState(false);
   return (
     <>
-      <Card sx={{ width: 270 }}>
+      <Card sx={{ width: 270, minHeight: "147px", position: "relative" }}>
         <CardContent>
           <Typography variant="h6" component="div">
             {SkillName}
@@ -40,7 +40,15 @@ function SkillCard(props: { Skill: skillDto; children?: ReactNode }) {
           <Typography variant="body2">{description}</Typography>
         </CardContent>
 
-        <Box sx={{ textAlign: "right", cursor: "pointer" }}>
+        <Box
+          sx={{
+            textAlign: "right",
+            cursor: "pointer",
+            position: "absolute",
+            top: "77%",
+            right: "3%",
+          }}
+        >
           <Edit
             color="primary"
             onClick={() => {

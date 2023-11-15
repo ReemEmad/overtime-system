@@ -3,7 +3,7 @@ export enum appRoutes {
   ADMIN_LANDING = "/app-admin/landing",
   ADMIN_LANDING_JOBS = "/app-admin/jobs",
   ADMIN_LANDING_SKILLS = "/app-admin/skills",
-  CANDIDATE_REGISTER = "/candidate/register",
+  CANDIDATE_REGISTER = "/register",
   CANDIDATE_LANDING = "/candidate/landing",
   CANDIDATE_PROFILE = "/candidate/profile",
   CANDIDATE_SKILLS = "/candidate/skills",
@@ -11,6 +11,6 @@ export enum appRoutes {
   SQUADLEAD_LANDING = "/squadLead/landing",
   SQUADLEAD_LANDING_POSITIONS = "/squadLead/positions",
   SQUADLEAD_LANDING_APPROVED_POSITIONS = "/squadLead/approved-positions",
-  // SQUADLEAD_LANDING_APPROVED_JOB = `/squadLead/approved-positions,
+  CFO_LANDING = "/cfo/landing",
 }
   

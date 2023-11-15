@@ -1,9 +1,15 @@
 export const getUserRole = () => {
-  const user = JSON.parse(localStorage.getItem("userData") ?? "");
-  return user.role;
+  const userString = localStorage.getItem("userData");
+
+  if (userString) {
+    const user = JSON.parse(userString);
+    return user.role;
+  }
+
+  return null;
 };
 
-export const getCreatedDate = (date: Date) => {
+export const getCreatedDate = (date: string | Date | Dayjs | undefined) => {
   return (
     new Date(date).getUTCDate() +
     "/" +
@@ -28,16 +34,23 @@ function stringToColor(string: string) {
     const value = (hash >> (i * 8)) & 0xff;
     color += `00${value.toString(16)}`.slice(-2);
   }
-  /* eslint-enable no-bitwise */
 
   return color;
 }
 
 export const stringAvatar = (name: string) => {
+  const names = name.split(" ");
+  const firstName = names[0];
+  const lastName = names.length > 1 ? names[1] : "";
+
+  const firstInitial = firstName.charAt(0);
+  const secondInitial = lastName.charAt(0);
+
   return {
     sx: {
       bgcolor: stringToColor(name),
     },
-    children: `${name.split(" ")[0][0]}${name.split(" ")[1][0]}`,
+    children: firstInitial + (secondInitial || ""),
   };
 };
+

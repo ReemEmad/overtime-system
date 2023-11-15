@@ -12,15 +12,18 @@ import {
   ListItemIcon,
   ListItemText,
 } from "@mui/material";
-import InboxIcon from "@mui/icons-material/MoveToInbox";
 import AddBoxIcon from "@mui/icons-material/AddBox";
-import MailIcon from "@mui/icons-material/Mail";
-import AdminLanding from "../../pages/AdminLanding";
 import { Link, Outlet, useNavigate } from "react-router-dom";
 import { getUserRole } from "../../utils/utility";
 import { appRoutes } from "../../data/constants/appRoutes";
 import { UserRoles } from "../../data/DTO/Roles";
-import { AccountCircleOutlined, ExitToApp } from "@mui/icons-material";
+import {
+  AccountCircleOutlined,
+  ExitToApp,
+  Work,
+  LaptopChromebook,
+  Dashboard,
+} from "@mui/icons-material";
 
 const drawerWidth = 240;
 
@@ -52,13 +55,25 @@ export default function SideMenu() {
           <Divider />
           {role === UserRoles.Admin && (
             <List>
-              {["Listed Jobs"].map((text) => (
+              {["Dashboard"].map((text) => (
+                <ListItem key={text} disablePadding>
+                  <ListItemButton
+                    onClick={() => navigate(appRoutes.ADMIN_LANDING)}
+                  >
+                    <ListItemIcon>
+                      <Dashboard color="primary" />
+                    </ListItemIcon>
+                    <ListItemText primary={text} />
+                  </ListItemButton>
+                </ListItem>
+              ))}
+              {["Listed Job Titles"].map((text) => (
                 <ListItem key={text} disablePadding>
                   <ListItemButton
                     onClick={() => navigate(appRoutes.ADMIN_LANDING_JOBS)}
                   >
                     <ListItemIcon>
-                      <AddBoxIcon />
+                      <Work color="info" />
                     </ListItemIcon>
                     <ListItemText primary={text} />
                   </ListItemButton>
@@ -70,7 +85,7 @@ export default function SideMenu() {
                     onClick={() => navigate(appRoutes.ADMIN_LANDING_SKILLS)}
                   >
                     <ListItemIcon>
-                      <AddBoxIcon />
+                      <LaptopChromebook />
                     </ListItemIcon>
                     <ListItemText primary={text} />
                   </ListItemButton>
@@ -80,7 +95,7 @@ export default function SideMenu() {
                 <ListItem key={text} disablePadding>
                   <ListItemButton onClick={() => navigate(appRoutes.SIGNOUT)}>
                     <ListItemIcon>
-                      <ExitToApp />
+                      <ExitToApp color="primary" />
                     </ListItemIcon>
                     <ListItemText primary={text} />
                   </ListItemButton>
@@ -90,6 +105,18 @@ export default function SideMenu() {
           )}
           {role === UserRoles.Operation && (
             <List>
+              {["Dashboard"].map((text) => (
+                <ListItem key={text} disablePadding>
+                  <ListItemButton
+                    onClick={() => navigate(appRoutes.CANDIDATE_LANDING)}
+                  >
+                    <ListItemIcon>
+                      <Dashboard color="primary" />
+                    </ListItemIcon>
+                    <ListItemText primary={text} />
+                  </ListItemButton>
+                </ListItem>
+              ))}
               {["Profile"].map((text) => (
                 <ListItem key={text} disablePadding>
                   <ListItemButton
@@ -117,6 +144,18 @@ export default function SideMenu() {
 
           {role === UserRoles.SquadLead && (
             <List>
+              {["Dashboard"].map((text) => (
+                <ListItem key={text} disablePadding>
+                  <ListItemButton
+                    onClick={() => navigate(appRoutes.SQUADLEAD_LANDING)}
+                  >
+                    <ListItemIcon>
+                      <Dashboard color="primary" />
+                    </ListItemIcon>
+                    <ListItemText primary={text} />
+                  </ListItemButton>
+                </ListItem>
+              ))}
               {["Projects"].map((text) => (
                 <ListItem key={text} disablePadding>
                   <ListItemButton
@@ -125,7 +164,7 @@ export default function SideMenu() {
                     }
                   >
                     <ListItemIcon>
-                      <AddBoxIcon />
+                      <LaptopChromebook color="info" />
                     </ListItemIcon>
                     <ListItemText primary={text} />
                   </ListItemButton>
@@ -139,7 +178,7 @@ export default function SideMenu() {
                     }
                   >
                     <ListItemIcon>
-                      <AddBoxIcon />
+                      <Work />
                     </ListItemIcon>
                     <ListItemText primary={text} />
                   </ListItemButton>
@@ -148,7 +187,36 @@ export default function SideMenu() {
               {["Signout"].map((text) => (
                 <ListItem key={text} disablePadding>
                   <ListItemButton onClick={() => navigate(appRoutes.SIGNOUT)}>
-                    <ListItemIcon>{/* <AddBoxIcon /> */}</ListItemIcon>
+                    <ListItemIcon>
+                      <ExitToApp color="info" />
+                    </ListItemIcon>
+                    <ListItemText primary={text} />
+                  </ListItemButton>
+                </ListItem>
+              ))}
+            </List>
+          )}
+
+          {role === UserRoles.CFO && (
+            <List>
+              {["Dashboard"].map((text) => (
+                <ListItem key={text} disablePadding>
+                  <ListItemButton
+                    onClick={() => navigate(appRoutes.CFO_LANDING)}
+                  >
+                    <ListItemIcon>
+                      <Dashboard color="primary" />
+                    </ListItemIcon>
+                    <ListItemText primary={text} />
+                  </ListItemButton>
+                </ListItem>
+              ))}
+              {["Signout"].map((text) => (
+                <ListItem key={text} disablePadding>
+                  <ListItemButton onClick={() => navigate(appRoutes.SIGNOUT)}>
+                    <ListItemIcon>
+                      <ExitToApp color="info" />
+                    </ListItemIcon>
                     <ListItemText primary={text} />
                   </ListItemButton>
                 </ListItem>

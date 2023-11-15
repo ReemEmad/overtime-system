@@ -101,7 +101,7 @@ export default function Jobs() {
           size="medium"
           onClick={() => setopenAddJob(true)}
         >
-          Add a job
+          Add a job title
         </Button>
       </Box>
       <Box>
@@ -114,6 +114,7 @@ export default function Jobs() {
           ))}
         </Grid>
       </Box>
+      <JobPopup add={true} open={openAddJob} setOpen={setopenAddJob} />
     </>
   );
 }

@@ -6,7 +6,6 @@ import {
   Box,
   Card,
   CardContent,
-  CardMedia,
   Typography,
   Button,
   Modal,
@@ -22,8 +21,6 @@ import MuiAlert, { AlertProps } from "@mui/material/Alert";
 import UserPopup from "./Popups/UserPopup";
 import { userDataDto } from "../data/DTO/User";
 import useAlert from "./Alerts/useAlert";
-import { stringAvatar } from "../utils/utility";
-import { useTheme } from "@mui/material/styles";
 
 const style = {
   position: "absolute" as "absolute",
@@ -38,32 +35,11 @@ const style = {
 };
 
 export default function SquadCard(props: { user: userDataDto }) {
-  const theme = useTheme();
   const [AlertComponent, showAlert] = useAlert();
   const { id, name: appuser, work_title } = props.user;
   const [deleteUser, deleteUserRes] = useDeleteUserMutation();
   const [open, setOpen] = useState(false);
-
-  const [openSuccess, setopenSuccess] = useState(false);
   const [openDelete, setopenDelete] = useState(false);
-
-  const Alert = forwardRef<HTMLDivElement, AlertProps>(function Alert(
-    props,
-    ref
-  ) {
-    return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
-  });
-
-  const handleCloseModal = (
-    event?: React.SyntheticEvent | Event,
-    reason?: string
-  ) => {
-    if (reason === "clickaway") {
-      return;
-    }
-
-    setopenSuccess(false);
-  };
 
   const handleCloseDelete = () => setopenDelete(false);
 
@@ -87,13 +63,6 @@ export default function SquadCard(props: { user: userDataDto }) {
     <>
       <AlertComponent />
       <Card>
-        {/* <CardMedia
-          component="img"
-          sx={{ width: 100 }}
-          image={src}
-          alt="avatar"
-        /> */}
-
         <CardContent>
           <Typography component="div" variant="h5" textAlign="left">
             {appuser}
@@ -108,23 +77,17 @@ export default function SquadCard(props: { user: userDataDto }) {
           </Typography>
         </CardContent>
         <CardActions disableSpacing>
-          {/* <Box sx={{ display: "flex", alignItems: "left", pl: 1, pb: 1 }}> */}
           <IconButton aria-label="edit">
-            <Edit
-              color="primary"
-              // sx={{ color: "primary" }}
-              onClick={handleOpen}
-            />
+            <Edit color="primary" onClick={handleOpen} />
           </IconButton>
           <IconButton aria-label="delete">
             <Delete color="error" onClick={() => setopenDelete(true)} />
           </IconButton>
-          {/* </Box> */}
         </CardActions>
       </Card>
+
       <UserPopup open={open} setOpen={setOpen} edit={true} user={props.user} />
-      {/* //possible refactor */}
-      {/* TODO://delete confirmation */}
+
       <Modal
         open={openDelete}
         onClose={handleCloseDelete}

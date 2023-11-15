@@ -75,7 +75,7 @@ export default function UserPopup(props: {
   const handleClose = () => setOpen(false);
 
   const setModalTitle = () => {
-    if (add) return "Add a new user";
+    if (add) return "Add A New Admin User";
     return "Edit User Data";
   };
 
@@ -192,43 +192,57 @@ export default function UserPopup(props: {
                 {setModalTitle()}
               </Typography>
             </Box>
-            <Box sx={{ ml: "21%" }}>
+            <Box>
               <TextField
                 id="filled-basic"
                 label="Name"
-                variant="filled"
+                variant="outlined"
+                fullWidth
                 value={username}
                 onChange={(e) => setusername(e.target.value)}
               />
+              <br />
+              <br />
               <TextField
                 id="filled-basic"
                 label="Title"
-                variant="filled"
+                variant="outlined"
+                fullWidth
                 value={userTitle}
                 onChange={(e) => setuserTitle(e.target.value)}
               />
+              <br />
+              <br />
               <TextField
                 id="filled-basic"
                 label="Email"
-                variant="filled"
+                variant="outlined"
+                fullWidth
                 value={userEmail}
                 onChange={(e) => setuserEmail(e.target.value)}
               />
+              <br />
+              <br />
               <TextField
                 id="filled-basic"
                 label="Password"
-                variant="filled"
+                variant="outlined"
+                fullWidth
                 type="password"
                 value={userPassword}
                 onChange={(e) => setuserPassword(e.target.value)}
               />
+              <br />
+              <br />
               <TextField
                 id="filled-basic"
                 label="Phone"
-                variant="filled"
+                variant="outlined"
+                fullWidth
                 value={userPhone}
                 onChange={(e) => setuserPhone(e.target.value)}
               />
+              <br />
               <br />
               <TextField
                 name="work_location"
@@ -236,10 +250,10 @@ export default function UserPopup(props: {
                 select
                 label="Select work location"
                 defaultValue=""
-                variant="filled"
+                variant="outlined"
+                fullWidth
                 value={userWorkLocation}
                 onChange={(e) => setuserWorkLocation(e.target.value)}
-                sx={{ width: "69%" }}
               >
                 {offices.map((option) => (
                   <MenuItem key={option} value={option}>
@@ -248,6 +262,7 @@ export default function UserPopup(props: {
                 ))}
               </TextField>
               <br />
+
               <FormControl sx={{ mt: 2 }}>
                 <FormLabel id="demo-row-radio-buttons-group-label">
                   Role

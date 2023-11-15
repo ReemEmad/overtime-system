@@ -54,7 +54,14 @@ const positionsExtendedApi = mainProvider.injectEndpoints({
           url: "/approved-jobs",
         };
       },
-      // providesTags: ["positions"],
+      providesTags: ["approvedPositions"],
+    }),
+    getApprovedPositionById: builder.query({
+      query: ({ id }) => {
+        return {
+          url: `/job/users/${id}`,
+        };
+      },
     }),
     postPositions: builder.mutation<JobToPost, JobToPost>({
       query: (args) => {
@@ -113,6 +120,13 @@ const positionsExtendedApi = mainProvider.injectEndpoints({
       },
       invalidatesTags: ["positions"],
     }),
+    applyPosition: builder.mutation<any, { id: number | undefined }>({
+      query: ({ id }) => ({
+        url: `/user/apply-job/${id}`,
+        method: "Post",
+      }),
+      invalidatesTags: ["candidatejobs"],
+    }),
   }),
 });
 
@@ -126,4 +140,7 @@ export const {
   useUpdatePositionMutation,
   useDeletePositionMutation,
   useDeleteSkillPositionMutation,
+  useGetApprovedPositionByIdQuery,
+  useApplyPositionMutation,
 } = positionsExtendedApi;
+

@@ -27,19 +27,21 @@ import AdminPositions from "./pages/AdminPositions";
 import CandidateSkills from "./pages/CandidateSkills";
 import Profile from "./pages/Profile";
 import ApprovedPositions from "./pages/ApprovedPositions";
-import ApprovedJob from "./components/ApprovedJob";
+import ApprovedJob from "./pages/ApprovedJob";
+import { UserProvider } from "./context/UserProvider";
+import CfoLanding from "./pages/CfoLanding";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <>
       <Route path="/" element={<Signin />} />
+      <Route path="register" element={<Register />} />
       <Route path="/app-admin" element={<SideMenu />} errorElement={<Error />}>
         <Route path="landing" element={<AdminLanding />}></Route>
         <Route path="jobs" element={<Jobs />} />
         <Route path="skills" element={<Skills />} />
       </Route>
       <Route path="/candidate" errorElement={<Error />} element={<SideMenu />}>
-        <Route path="register" element={<Register />} />
         <Route path="skills" element={<CandidateSkills />} />
         <Route path="landing" element={<CandidateLanding />} />
         <Route path="signout" element={<Signout />} />
@@ -50,6 +52,9 @@ const router = createBrowserRouter(
         <Route path="positions" element={<AdminPositions />} />
         <Route path="approved-positions" element={<ApprovedPositions />} />
         <Route path="approved-positions/:id" element={<ApprovedJob />} />
+      </Route>
+      <Route path="/cfo" errorElement={<Error />} element={<SideMenu />}>
+        <Route path="landing" element={<CfoLanding />} />
       </Route>
       <Route path="*" element={<p>404 Not found...</p>} />
     </>
@@ -68,10 +73,12 @@ function App(props: { children: any }) {
 
   return (
     <ThemeProvider theme={theme}>
-      <LocalizationProvider dateAdapter={AdapterDayjs}>
-        <RouterProvider router={router} />
-        {children}
-      </LocalizationProvider>
+      <UserProvider>
+        <LocalizationProvider dateAdapter={AdapterDayjs}>
+          <RouterProvider router={router} />
+          {children}
+        </LocalizationProvider>
+      </UserProvider>
     </ThemeProvider>
   );
 }

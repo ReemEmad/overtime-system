@@ -81,7 +81,6 @@ export default function AdminLanding() {
           flexDirection: "row",
           justifyContent: "space-between",
           alignItems: "end",
-          // paddingX: "24px",
           marginBottom: "1rem",
         }}
       >

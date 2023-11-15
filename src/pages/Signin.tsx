@@ -1,42 +1,13 @@
 import * as React from "react";
-import {
-  Dispatch,
-  SetStateAction,
-  useState,
-  forwardRef,
-  useEffect,
-} from "react";
-import { Box, Button, Typography, Divider, TextField } from "@mui/material";
-import MuiAlert, { AlertProps } from "@mui/material/Alert";
-import { LoadingButton } from "@mui/lab";
-import SideMenu from "../components/Menus/SideMenu";
+import { useState, useEffect } from "react";
+import { Box, Button, Typography, TextField } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { useLoginUserMutation } from "../services/auth.service";
-import { AuthResponse } from "../data/DTO/AuthResponse";
-import useAuthToken from "../hooks/useAuthToken";
-import useAuthorization from "../hooks/useAuthorization";
 import { UserRoles } from "../data/DTO/Roles";
 import { appRoutes } from "../data/constants/appRoutes";
 import useAlert from "../components/Alerts/useAlert";
 import src from "../assets/login.svg";
-
-const style = {
-  position: "absolute" as "absolute",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  width: 400,
-  bgcolor: "background.paper",
-  border: "2px solid #000",
-  boxShadow: 24,
-  p: 4,
-};
-
-interface userDTO {
-  role: UserRoles;
-  access_token: string;
-  user: object;
-}
+import "./signin.module.css";
 
 export default function Signin() {
   const [AlertComponent, showAlert] = useAlert();
@@ -56,7 +27,7 @@ export default function Signin() {
         navigate(appRoutes.CANDIDATE_LANDING);
         break;
       case UserRoles.CFO:
-        navigate(appRoutes.ADMIN_LANDING);
+        navigate(appRoutes.CFO_LANDING);
         break;
       case UserRoles.SquadLead:
         navigate(appRoutes.SQUADLEAD_LANDING);
@@ -94,13 +65,10 @@ export default function Signin() {
           sx={{
             display: "flex",
             alignItems: "center",
-            // placeItems: "center",
-            // justifyContent: "center",
-            // gap: "40px",
-            // margin: "auto",
             maxHeight: "100vh",
           }}
         >
+          {/* <Lottie animationData={groovyWalkAnimation} /> */}
           <Box
             sx={{
               backgroundColor: "#effefd",
@@ -122,23 +90,9 @@ export default function Signin() {
 
             <img width="65%" src={src} />
           </Box>
-          {/* <Divider orientation="vertical" /> */}
-
           <Box sx={{ marginLeft: "50px" }}>
-            <Typography
-              component="div"
-              variant="h5"
-              // textAlign="left"
-              // color="GrayText"
-              mb={3}
-            >
-              <Typography
-                component="div"
-                variant="h4"
-                // textAlign="left"
-                // color=""
-                mb={3}
-              >
+            <Typography component="div" variant="h5" mb={3}>
+              <Typography component="div" variant="h4" mb={3}>
                 <Box sx={{ fontWeight: "bold" }}>Welcome Back!</Box>
               </Typography>
               Please sign in to your account

@@ -92,7 +92,7 @@ function SquadLeadLanding() {
           size="medium"
           onClick={() => setopen(true)}
         >
-          Add a new job position
+          Add a new job
         </Button>
         <br />
       </Box>

@@ -29,7 +29,7 @@ function JobCard(props: { job: JobDTO; children?: ReactNode }) {
   const [openEdit, setopenEdit] = useState(false);
   return (
     <>
-      <Card sx={{ width: 270, minHeight: "120px" }}>
+      <Card sx={{ width: 270, minHeight: "147px", position: "relative" }}>
         <CardContent>
           <Typography variant="h6" component="div">
             {jobName}
@@ -40,7 +40,14 @@ function JobCard(props: { job: JobDTO; children?: ReactNode }) {
           <Typography variant="body2">{description}</Typography>
         </CardContent>
 
-        <Box sx={{ p: "3", textAlign: "right", cursor: "pointer" }}>
+        <Box
+          sx={{
+            position: "absolute",
+            textAlign: "right",
+            top: "77%",
+            right: "3%",
+          }}
+        >
           <Edit
             color="info"
             onClick={() => {

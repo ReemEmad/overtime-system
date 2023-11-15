@@ -97,10 +97,6 @@ export default function Register() {
 
   useEffect(() => {
     if (registerUserRes.isSuccess) {
-      console.log(
-        "🚀 ~ file: Register.tsx:100 ~ useEffect ~ registerUserRes:",
-        registerUserRes
-      );
       const response: any = registerUserRes.data.body;
       localStorage.setItem("userData", JSON.stringify(response));
       checkUserRoleAndRedirect(response.role);

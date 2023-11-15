@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Card,
   CardContent,
@@ -19,17 +19,26 @@ import { getCreatedDate } from "../utils/utility";
 import EditPositionPopup from "./Popups/EditPositionPopup";
 import { useNavigate } from "react-router-dom";
 import { appRoutes } from "../data/constants/appRoutes";
+import { useApplyPositionMutation } from "../services/positions.service";
+import OverlappingAvatars from "./OverlappingAvatars";
+import useAlert from "./Alerts/useAlert";
+import { useApproveJobMutation } from "../services/cfo.service";
 
 function PositionCard(props: {
   jobPosition: any;
   editable?: boolean;
   candidateJob?: boolean;
   score?: number;
+  cfo?: boolean;
 }) {
+  const [AlertComponent, showAlert] = useAlert();
   const navigate = useNavigate();
   const { jobPosition: item } = props;
+  const [approveJob, approveJobRes] = useApproveJobMutation();
   const [openEdit, setopenEdit] = useState(false);
   const [openSideDrawer, setOpenSideDrawer] = useState(false);
+  const [applyJob, applyJobRes] = useApplyPositionMutation();
+  const [userApplied, setuserApplied] = useState<Boolean>(false);
 
   type Anchor = "top" | "left" | "bottom" | "right";
 
@@ -49,16 +58,53 @@ function PositionCard(props: {
     };
 
   const handleOnClick = () => {
-    item.job_status === "approved"
+    item.job_status === "approved" && !props.candidateJob
       ? navigate(
           appRoutes.SQUADLEAD_LANDING_APPROVED_POSITIONS + `/${item.job_id}`
         )
-      : () => setOpenSideDrawer(true);
+      : setOpenSideDrawer(true);
   };
+
+  const handleApply = async () => {
+    await applyJob({ id: item.job_id });
+  };
+
+  const handleApprove = async () => {
+    await approveJob({ id: item.job_id });
+  };
+
+  useEffect(() => {
+    if (applyJobRes.isSuccess) {
+      setuserApplied(true);
+      showAlert([applyJobRes.data.messages[0].message], "success");
+    }
+    if (applyJobRes.isError) {
+      console.log(applyJobRes);
+      showAlert([applyJobRes?.error?.data?.messages[0].message], "error");
+    }
+  }, [applyJobRes]);
+
+  useEffect(() => {
+    if (approveJobRes.isSuccess) {
+      showAlert([approveJobRes.data.messages[0].message], "success");
+    }
+    if (approveJobRes.isError) {
+      console.log(approveJobRes);
+      showAlert([approveJobRes?.error?.data?.messages[0].message], "error");
+    }
+  }, [approveJobRes]);
 
   return (
     <>
-      <Card sx={{ width: 400, minHeight: "150px", marginTop: "10px" }}>
+      <AlertComponent />
+      <Card
+        sx={{
+          width: 400,
+          minHeight: "240px",
+          marginTop: "10px",
+          position: "relative",
+        }}
+      >
         <CardContent>
           <Box
             sx={{
@@ -75,8 +121,12 @@ function PositionCard(props: {
               {item.job_employee_required_position}
             </Typography>
             <br />
-            {!props.candidateJob && item.job_status !== "approved" && (
-              <Chip size="small" label={item.job_status} color="info" />
+            {!props.candidateJob && (
+              <Chip
+                size="small"
+                label={item.job_status}
+                color={item.job_status === "pending" ? "info" : "primary"}
+              />
             )}
           </Box>
           <Typography variant="caption" align="right">
@@ -98,6 +148,7 @@ function PositionCard(props: {
           </Typography>
         </CardContent>
         <Divider />
+        {item.users && <OverlappingAvatars users={item.users} />}
         <CardActions
           sx={{
             display: "flex",
@@ -110,12 +161,29 @@ function PositionCard(props: {
               <strong>{props.score}% match!</strong>
             </Typography>
           )}
-          {props.candidateJob && (
+          {props.candidateJob && !userApplied && (
             <>
-              <Button variant="outlined" color="primary" size="small">
+              <Button
+                variant="outlined"
+                color="primary"
+                size="small"
+                onClick={handleApply}
+              >
                 Apply
               </Button>
             </>
+          )}
+          {props.cfo && (
+            <Box sx={{ position: "absolute", top: "80%", left: "2%" }}>
+              <Button
+                variant="outlined"
+                color="primary"
+                size="small"
+                onClick={handleApprove}
+              >
+                Approve
+              </Button>
+            </Box>
           )}
           {props.editable && (
             <Edit
@@ -148,7 +216,6 @@ function PositionCard(props: {
               sx: {
                 width: 300,
                 padding: "10px",
-                // textAlign: "right",
                 background: "#e7e7e7",
               },
             }}
