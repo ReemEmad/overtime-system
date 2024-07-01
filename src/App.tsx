@@ -41,11 +41,17 @@ const router = createBrowserRouter(
         <Route path="jobs" element={<Jobs />} />
         <Route path="skills" element={<Skills />} />
       </Route>
-      <Route path="/candidate" errorElement={<Error />} element={<SideMenu />}>
-        <Route path="skills" element={<CandidateSkills />} />
-        <Route path="landing" element={<CandidateLanding />} />
-        <Route path="signout" element={<Signout />} />
-        <Route path="profile" element={<Profile />} />
+      <Route path="/candidate/*">
+        <Route element={<SideMenu />}>
+          <Route path="skills" element={<CandidateSkills />} />
+          <Route
+            path="landing"
+            element={<CandidateLanding />}
+            errorElement={<Error />}
+          />
+          <Route path="signout" element={<Signout />} />
+          <Route path="profile" element={<Profile />} />
+        </Route>
       </Route>
       <Route path="/squadlead" errorElement={<Error />} element={<SideMenu />}>
         <Route path="landing" element={<SquadLeadLanding />} />

@@ -1,6 +1,13 @@
-import * as React from "react";
 import { useState, useEffect } from "react";
-import { Box, Button, Typography, TextField } from "@mui/material";
+import {
+  Box,
+  Button,
+  Typography,
+  InputAdornment,
+  IconButton,
+  OutlinedInput,
+  InputLabel,
+} from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { useLoginUserMutation } from "../services/auth.service";
 import { UserRoles } from "../data/DTO/Roles";
@@ -8,6 +15,7 @@ import { appRoutes } from "../data/constants/appRoutes";
 import useAlert from "../components/Alerts/useAlert";
 import src from "../assets/login.svg";
 import "./signin.module.css";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
 
 export default function Signin() {
   const [AlertComponent, showAlert] = useAlert();
@@ -16,6 +24,7 @@ export default function Signin() {
   const [userEmail, setuserEmail] = useState("");
   const [userPassword, setuserPassword] = useState("");
   const [errorMessages, seterrorMessages] = useState([]);
+  const [showPass, setShowPass] = useState(false);
 
   const confirmLogin = () => {
     loginUser({ email: userEmail, password: userPassword });
@@ -51,7 +60,9 @@ export default function Signin() {
     } else if (loginUserRes.isError) {
       const errorRes: any = loginUserRes.error;
       let data: any = [...errorMessages];
-      errorRes.data.messages.map((message: any) => data.push(message.message));
+      errorRes.data?.messages?.map((message: any) =>
+        data.push(message.message)
+      );
       seterrorMessages(data);
       showAlert([data.join(" ")], "error");
       seterrorMessages([]);
@@ -68,7 +79,6 @@ export default function Signin() {
             maxHeight: "100vh",
           }}
         >
-          {/* <Lottie animationData={groovyWalkAnimation} /> */}
           <Box
             sx={{
               backgroundColor: "#effefd",
@@ -98,10 +108,9 @@ export default function Signin() {
               Please sign in to your account
             </Typography>
             <Box>
-              <TextField
-                id="outlined-basic"
-                label="Email"
-                variant="outlined"
+              <InputLabel htmlFor="outlined-basic-email">Email</InputLabel>
+              <OutlinedInput
+                id="outlined-basic-email"
                 fullWidth
                 value={userEmail}
                 onChange={(e) => setuserEmail(e.target.value)}
@@ -109,22 +118,36 @@ export default function Signin() {
             </Box>
             <br />
             <Box>
-              <TextField
-                id="outlined-basic"
-                label="Password"
-                variant="outlined"
+              <InputLabel htmlFor="outlined-basic-password">
+                Password
+              </InputLabel>
+              <OutlinedInput
+                id="outlined-basic-password"
                 fullWidth
-                type="password"
+                type={showPass ? "text" : "password"}
                 value={userPassword}
                 onChange={(e) => setuserPassword(e.target.value)}
+                endAdornment={
+                  <InputAdornment position="end">
+                    <IconButton
+                      aria-label="toggle password visibility"
+                      onClick={() => setShowPass((prev) => !prev)}
+                      edge="end"
+                    >
+                      {showPass ? <VisibilityOff /> : <Visibility />}
+                    </IconButton>
+                  </InputAdornment>
+                }
               />
             </Box>
+
             <br />
             <Button
               variant="contained"
               size="medium"
               onClick={confirmLogin}
               fullWidth
+              disabled={loginUserRes.isLoading}
             >
               Login
             </Button>

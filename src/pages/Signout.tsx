@@ -5,7 +5,6 @@ import { appRoutes } from "../data/constants/appRoutes";
 function Signout() {
   const navigate = useNavigate();
   useEffect(() => {
-    console.log("~");
     localStorage.removeItem("userData");
     navigate(appRoutes.SIGN_IN);
   }, []);

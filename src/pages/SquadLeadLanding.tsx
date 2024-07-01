@@ -96,13 +96,30 @@ function SquadLeadLanding() {
         </Button>
         <br />
       </Box>
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          padding: "20px",
+          backgroundColor: "#f7f7f7",
+          borderRadius: "8px",
+          textAlign: "center",
+        }}
+      >
+        <Typography
+          variant="h6"
+          sx={{ marginBottom: "8px" }}
+          color="textSecondary"
+        >
+          No jobs are currently available. Try adding a new job.
+        </Typography>
+      </Box>
 
       <Box
         sx={{
-          // marginLeft: "50%",
           display: "flex",
           flexGrow: 1,
-          // flexDirection: "column",
           justifyContent: "start",
           alignItems: "center",
           gap: "30px",

@@ -1,5 +1,4 @@
 import { Box, CircularProgress, Grid, Typography } from "@mui/material";
-import { useEffect } from "react";
 import { useGetCandidateJobsQuery } from "../services/user.service";
 import { JobDTO } from "../data/DTO/Job";
 import PositionCard from "../components/PositionCard";
@@ -40,10 +39,21 @@ function CandidateLanding() {
                 display: "flex",
                 justifyContent: "center",
                 alignItems: "center",
+                padding: "20px",
+                backgroundColor: "#f7f7f7",
+                borderRadius: "8px",
+                textAlign: "center",
               }}
             >
-              <Typography variant="h6">
-                No available jobs to apply to at the moment
+              <Typography
+                variant="h6"
+                sx={{ marginBottom: "8px" }}
+                color="textSecondary"
+              >
+                No available jobs to apply to at the moment.{"   "}
+              </Typography>
+              <Typography variant="body2" color="textSecondary">
+                Check again later.
               </Typography>
             </Box>
           )}
